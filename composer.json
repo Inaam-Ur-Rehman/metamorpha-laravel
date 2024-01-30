@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "mollie/laravel-mollie": "^2.25",
+        "spatie/laravel-markdown": "^2.4",
         "spatie/laravel-menu": "^4.1",
         "spatie/menu": "^3.2",
         "z3d0x/filament-fabricator": "^2.0"
