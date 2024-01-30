@@ -3,6 +3,7 @@
 namespace App\Filament\Fabricator\PageBlocks;
 
 use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\RichEditor;
 use Z3d0X\FilamentFabricator\PageBlocks\PageBlock;
 
@@ -12,7 +13,7 @@ class Privacy extends PageBlock
     {
         return Block::make('privacy')
             ->schema([
-                RichEditor::make("content")
+                MarkdownEditor::make("content")
                     ->required()
                     ->label("Content")
             ]);
