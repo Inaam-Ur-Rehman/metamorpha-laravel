@@ -171,3 +171,9 @@ body{
 /*    test has a 20px height line behind the text as highlight*/
 
 }
+
+@media screen and (max-width: 768px) {
+    .slick-next, .slick-prev {
+        display: none !important;
+    }
+}
