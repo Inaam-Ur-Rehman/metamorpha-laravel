@@ -15,7 +15,7 @@
                     <div class="relative" x-data="{ subOpen: false }">
                         <div class="flex items-center gap-2" @click="subOpen = !subOpen">
                             <p
-                                class="hover:underline underline-offset-4 decoration-2 {{ request()->is($link['url']) ? 'underline' : '' }}">
+                                class="hover:underline underline-offset-4 decoration-2 cursor-pointer {{ request()->is($link['url']) ? 'underline' : '' }}">
                                 {{ $link['name'] }}
                             </p>
                             <x-heroicon-o-chevron-down class="inline-block w-4 h-4 text-black cursor-pointer" />
