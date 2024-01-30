@@ -13,8 +13,9 @@
             <h2 class="font-bold !font-vp400 text-theme-blue">Handige links</h2>
             <div class="flex flex-col gap-2 mt-4">
                 <a href="/" class="block hover:underline underline-offset-4 decoration-2">Bedrijfsinformatie</a>
-                <a href="/" class="block hover:underline underline-offset-4 decoration-2">KMO-portefeuille</a>
-                <a href="/" class="block hover:underline underline-offset-4 decoration-2">Wettelijke
+                <a href="https://www.vlaio.be/nl/subsidies-financiering/kmo-portefeuille"
+                    class="block hover:underline underline-offset-4 decoration-2">KMO-portefeuille</a>
+                <a href="/privacy-policy" class="block hover:underline underline-offset-4 decoration-2">Wettelijke
                     informatie</a>
                 <a href="mailto:Bart@Metamorpha.be" class="block">
                     <span class="flex items-center gap-2">
@@ -37,7 +38,8 @@
             <h2 class="font-bold !font-vp400 text-theme-blue">Informatie</h2>
             <div class="flex flex-col gap-2 mt-4">
                 <a href="/" class="block hover:underline underline-offset-4 decoration-2">Home</a>
-                <a href="/agenda" class="block hover:underline underline-offset-4 decoration-2">Agenda</a>
+                <a href="https://calendly.com/bart-vanderherten"
+                    class="block hover:underline underline-offset-4 decoration-2">Agenda</a>
                 <a href="/getuigenissen" class="block hover:underline underline-offset-4 decoration-2">Getuigenissen</a>
                 <a href="/inspiratie" class="block hover:underline underline-offset-4 decoration-2">Inspiratie</a>
                 <a href="/team" class="block hover:underline underline-offset-4 decoration-2">Team</a>

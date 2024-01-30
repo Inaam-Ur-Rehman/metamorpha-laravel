@@ -15,8 +15,9 @@
                             {{ $paper->desc }}
                         </p>
                     </div>
-                    <x-button class="mt-12 border-2" icon="fas fa-heart" href="/inspiratie/download-form/{{ $paper->slug }}"
-                        target="_blank" rel="noopener noreferrer" color="primary" label="DOWNLOAD" />
+                    <x-button class="mt-12 border-2" icon="fas fa-download"
+                        href="/inspiratie/download-form/{{ $paper->slug }}" target="_blank" rel="noopener noreferrer"
+                        color="primary" label="DOWNLOAD" />
                 </div>
             </div>
         </div>

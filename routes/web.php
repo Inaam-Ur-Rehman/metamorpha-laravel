@@ -5,6 +5,7 @@ use App\Http\Controllers\LevensController;
 use App\Http\Controllers\BoekController;
 use App\Http\Controllers\DownloadDoc;
 use App\Http\Controllers\InspiratiekaartenController;
+use App\Http\Controllers\PrivacyController;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,4 @@ Route::get('/aanbod/verandering', [\App\Http\Controllers\VeranderingController::
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::get('/checkout', [DownloadDoc::class, 'index'])->name('checkout');
 Route::get('/success', [DownloadDoc::class, 'success'])->name('success');
+Route::get('/privacy-policy', [PrivacyController::class, 'index'])->name('privacy-policy');
