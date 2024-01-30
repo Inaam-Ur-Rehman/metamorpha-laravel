@@ -1,0 +1,173 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .verticle {
+        writing-mode: vertical-rl;
+        text-transform: uppercase;
+    }
+}
+
+/* 100 – Thin
+200 – Extra Light (Ultra Light)
+300 – Light
+400 – Normal
+500 – Medium
+600 – Semi Bold (Demi Bold)
+700 – Bold
+800 – Extra Bold (Ultra Bold)
+900 – Black (Heavy) */
+
+/* fonts  */
+
+@font-face{
+    font-family: 'Verdana';
+    src: url('~font/Verdana.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Bold';
+    src: url('~font/Verdana-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+
+
+/* verdana pro  */
+
+@font-face{
+    font-family: 'Verdana Pro Light';
+    src: url('~font/VerdanaPro-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Regular';
+    src: url('~font/VerdanaPro-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Semi Bold';
+    src: url('~font/VerdanaPro-SemiBold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Bold';
+    src: url('~font/VerdanaPro-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+
+/* verdana pro cond */
+
+@font-face{
+    font-family: 'Verdana Pro Cond Light';
+    src: url('~font/VerdanaPro-CondLight.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Cond Regular';
+    src: url('~font/VerdanaPro-CondRegular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Cond Semi Bold';
+    src: url('~font/VerdanaPro-CondSemiBold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Cond Bold';
+    src: url('~font/VerdanaPro-CondBold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+}
+@font-face{
+    font-family: 'Verdana Pro Cond Black';
+    src: url('~font/VerdanaPro-CondBlack.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+}
+
+body{
+    font-family: 'Verdana', sans-serif;
+}
+
+.heading-hero {
+    all: unset;
+    font-size: 3rem;
+    color: black;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+    text-transform: uppercase;
+}
+.quote {
+    font-size: 2.2rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+.slick-prev{
+    background-color: #0F0147;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 99999999;
+    left: -15px;
+}
+.slick-prev:focus{
+    background-color: #0F0147;
+}
+.slick-prev:hover{
+    background-color: #0F0147;
+}
+.slick-prev::before{
+
+    color: white;
+    content: url("/public/arrow-left.svg");
+    font-size: 2rem;
+}
+.slick-next{
+    background-color: #0F0147;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 99999999;
+    right: -15px;
+    transform: rotate(180deg);
+
+}
+.slick-next:focus{
+    background-color: #0F0147;
+}
+.slick-next:hover{
+    background-color: #0F0147;
+}
+.slick-next::before{
+    color: white;
+    content: url("/public/arrow-left.svg");
+    font-size: 2rem;
+}
+
+.custom {
+/*    test has a 20px height line behind the text as highlight*/
+
+}
