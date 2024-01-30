@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 @else
-                    <a href="">
+                    <a href="{{ $link['url'] }}">
                         {{ $link['name'] }}
                     </a>
                 @endif
