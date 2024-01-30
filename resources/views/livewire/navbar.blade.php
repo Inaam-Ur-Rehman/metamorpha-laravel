@@ -51,12 +51,11 @@
             @foreach ($menu as $link)
                 @if (isset($link['submenu']))
                     <div class="relative" x-data="{ subOpen: false }">
-                        <div class="flex items-center gap-2">
-                            <a href="">
+                        <div class="flex items-center gap-2" @click="subOpen = !subOpen">
+                            <p>
                                 {{ $link['name'] }}
-                            </a>
-                            <x-heroicon-o-chevron-down class="inline-block w-4 h-4 text-black cursor-pointer"
-                                @click="subOpen = !subOpen" />
+                            </p>
+                            <x-heroicon-o-chevron-down class="inline-block w-4 h-4 text-black cursor-pointer" />
                         </div>
                         <div x-show="subOpen" @click.outside="subOpen = false"
                             class="left-0 z-40 flex flex-col w-full gap-2 px-4 py-2 lg:shadow-lg lg:absolute lg:bg-gray-50 top-8 min-w-max">

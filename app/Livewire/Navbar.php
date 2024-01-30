@@ -28,7 +28,7 @@ class Navbar extends Component
                     ['name' => 'Verdieping', 'url' => '/aanbod/verdieping'],
                 ]
             ],
-            ['name' => 'Agenda', 'url' => '/agenda'],
+            ['name' => 'Agenda', 'url' => 'https://calendly.com/bart-vanderherten'],
             ['name' => 'Getuigenissen', 'url' => '/getuigenissen'],
             ['name' => 'Inspiratie', 'url' => '/inspiratie'],
             ['name' => 'Team', 'url' => '/team'],
