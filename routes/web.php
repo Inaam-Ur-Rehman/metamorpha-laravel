@@ -24,6 +24,7 @@ use Mollie\Laravel\Facades\Mollie;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/aanbod/levens', [LevensController::class, 'index'])->name('levens');
 Route::get('/aanbod/inspiratiekaarten', [InspiratiekaartenController::class, 'index'])->name('inspiratiekaarten');
+Route::get('/aanbod/inspiratiekaarten/download', [InspiratiekaartenController::class, 'download'])->name('download-instruction');
 Route::get('/aanbod/boek', [BoekController::class, 'index'])->name('boek');
 Route::get('/team', [\App\Http\Controllers\TeamController::class, 'index'])->name('team');
 Route::get('/inspiratie', [\App\Http\Controllers\InspiratieController::class, 'index'])->name('inspiratie');
