@@ -27,6 +27,9 @@ class HorizontalDecoratedCard extends PageBlock
                 TextInput::make('vertical_title')
                     ->label('Vertical Title')
                     ->required(),
+                TextInput::make("tag_id")
+                    ->label("Tag ID")
+                    ->required(),
                 Select::make('direction')
                     ->label('Direction')
                     ->options([
