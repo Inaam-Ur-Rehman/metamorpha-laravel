@@ -141,18 +141,18 @@
         <hr class="my-6" />
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between">
-                <h3 class="font-bold">Subtotal</h3>
+                <h3 class="font-bold">Subtoataal</h3>
                 <p class="font-bold">€ {{ $block['price'] }}.00</p>
             </div>
             <div class="flex items-center justify-between">
-                <h3>Shipping costs</h3>
+                <h3>Verzendkosten</h3>
                 <p>€ 0.00</p>
             </div>
         </div>
         <hr class="my-6" />
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between text-xl">
-                <h3 class="font-bold">Total</h3>
+                <h3 class="font-bold">Totaal</h3>
                 <p x-show="country=='Belgium'" class="font-bold">€
                     {{ $block['price'] }}.00
                 </p>
@@ -161,7 +161,7 @@
                 </p>
             </div>
             <div class="flex items-center justify-between">
-                <h3>Amount incl. 6% BTW en verzendkosten</h3>
+                <h3>Bedrag incl. 6% BTW en verzendkosten</h3>
                 {{-- <p>6 %</p> --}}
             </div>
         </div>
