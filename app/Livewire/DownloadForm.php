@@ -24,7 +24,6 @@ class DownloadForm extends Component
         'email' => 'required|email',
         'phone' => 'required|min:10',
         'company' => 'required|min:3',
-        'persona' => 'required|min:3',
     ];
 
     public $messages = [
@@ -42,10 +41,8 @@ class DownloadForm extends Component
         Download::create([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'email' => $this->email,
             'phone' => $this->phone,
-            'company' => $this->company,
-            'persona' => $this->persona,
+            'company' => $this->company
         ]);
         if ($this->subscribed) {
             if (!Newsletter::where('email', $this->email)->exists()) {
@@ -57,7 +54,6 @@ class DownloadForm extends Component
         session()->flash('message', 'Bedankt voor het downloaden!');
 
         $file = Paper::where('slug', $this->slug)->firstOrFail();
-
 
         $this->reset();
         return response()->download(storage_path("app/public/{$file->file}"));

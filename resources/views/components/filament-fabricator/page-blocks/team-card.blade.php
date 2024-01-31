@@ -18,26 +18,30 @@
             <div class="mt-4 !font-v400 prose-base prose-ul:list-disc">
                 {!! $content !!}
 
-                <button
-                    class="text-theme-blue  hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
-                    @click="toggleShowMore()">
-                    <span x-show="!showMore">
-                        MEER
-                        <x-heroicon-s-chevron-down class="inline w-4 h-4" />
-                    </span>
-                </button>
+                @if ($more_content)
+                    <button
+                        class="text-theme-blue  hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
+                        @click="toggleShowMore()">
+                        <span x-show="!showMore">
+                            MEER
+                            <x-heroicon-s-chevron-down class="inline w-4 h-4" />
+                        </span>
+                    </button>
+                @endif
 
                 <div x-show="showMore">
                     {!! html_entity_decode($more_content) !!}
 
-                    <button
-                        class="text-theme-blue mt-8 hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
-                        @click="toggleShowMore()">
-                        <span x-show="showMore">
-                            VERBERGEN
-                            <x-heroicon-s-chevron-up class="inline w-4 h-4" />
-                        </span>
-                    </button>
+                    @if ($more_content)
+                        <button
+                            class="text-theme-blue mt-8 hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
+                            @click="toggleShowMore()">
+                            <span x-show="showMore">
+                                VERBERGEN
+                                <x-heroicon-s-chevron-up class="inline w-4 h-4" />
+                            </span>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -60,26 +64,30 @@
             <div class="mt-4 !font-v400 prose-base prose-ul:list-disc">
                 {!! $content !!}
 
-                <button
-                    class="text-theme-blue  hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
-                    @click="toggleShowMore()">
-                    <span x-show="!showMore">
-                        MEER
-                        <x-heroicon-s-chevron-down class="inline w-4 h-4" />
-                    </span>
-                </button>
+                @if ($more_content)
+                    <button
+                        class="text-theme-blue  hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
+                        @click="toggleShowMore()">
+                        <span x-show="!showMore">
+                            MEER
+                            <x-heroicon-s-chevron-down class="inline w-4 h-4" />
+                        </span>
+                    </button>
+                @endif
 
                 <div x-show="showMore">
                     {!! html_entity_decode($more_content) !!}
 
-                    <button
-                        class="text-theme-blue mt-8 hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
-                        @click="toggleShowMore()">
-                        <span x-show="showMore">
-                            VERBERGEN
-                            <x-heroicon-s-chevron-up class="inline w-4 h-4" />
-                        </span>
-                    </button>
+                    @if ($more_content)
+                        <button
+                            class="text-theme-blue mt-8 hover:text-theme-light-blue !font-vp700 flex text-center mx-auto max-w-max w-full"
+                            @click="toggleShowMore()">
+                            <span x-show="showMore">
+                                VERBERGEN
+                                <x-heroicon-s-chevron-up class="inline w-4 h-4" />
+                            </span>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

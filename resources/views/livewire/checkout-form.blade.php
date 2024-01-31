@@ -133,7 +133,7 @@
 
     </div>
     <div class="w-full md:max-w-md px-8 bg-white rounded-md h-max justify-self-end !font-v400">
-        <h2 class="text-2xl md:text-4xl !font-vpc900 uppercase text-theme-blue text-center my-4">Shoppingcart</h2>
+        <h2 class="text-2xl md:text-4xl !font-vpc900 uppercase text-theme-blue text-center my-4">Winkelmandje</h2>
         <div class="flex items-center justify-between">
             <h3>Inspiratiekaarten</h3>
             <p>€ {{ $block['price'] }}.00</p>
@@ -161,8 +161,8 @@
                 </p>
             </div>
             <div class="flex items-center justify-between">
-                <h3>Amount incl. VAT</h3>
-                <p>6 %</p>
+                <h3>Amount incl. 6% BTW en verzendkosten</h3>
+                {{-- <p>6 %</p> --}}
             </div>
         </div>
         <button type="submit" wire:click.prevent='submit'

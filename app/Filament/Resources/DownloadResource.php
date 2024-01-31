@@ -42,9 +42,6 @@ class DownloadResource extends Resource
                 TextInput::make('company')
                     ->required()
                     ->placeholder(__('Company')),
-                TextInput::make('persona')
-                    ->required()
-                    ->placeholder(__('Persona')),
             ]);
     }
 

@@ -64,18 +64,6 @@
                 <span class="text-xs text-red-600">{{ $message }}</span>
             @enderror
         </div>
-        <!-- Persona* -->
-        <div>
-            <label for="persona" class="block mb-2">
-                Persona
-                <span class="text-red-600">*</span>
-            </label>
-            <input type="text" name="persona" id="persona" wire:model='persona'
-                class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" />
-            @error('persona')
-                <span class="text-xs text-red-600">{{ $message }}</span>
-            @enderror
-        </div>
         <!-- Schrijf me in voor de nieuwsbrief checkbox -->
         <div class="flex items-center gap-2">
             <input type="checkbox" name="nieuwsbrief" id="nieuwsbrief" class="w-5 h-5" wire:model='subscribed' />
