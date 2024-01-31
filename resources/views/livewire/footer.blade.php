@@ -14,7 +14,7 @@
             <div class="flex flex-col gap-2 mt-4">
                 <a href="/bedrijfsinformatie"
                     class="block hover:underline underline-offset-4 decoration-2">Bedrijfsinformatie</a>
-                <a href="https://www.vlaio.be/nl/subsidies-financiering/kmo-portefeuille"
+                <a href="/kmo-portefeuille"
                     class="block hover:underline underline-offset-4 decoration-2">KMO-portefeuille</a>
                 <a href="/wettelijke-informatie"
                     class="block hover:underline underline-offset-4 decoration-2">Wettelijke
