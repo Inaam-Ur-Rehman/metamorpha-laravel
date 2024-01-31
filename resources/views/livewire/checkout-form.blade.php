@@ -141,7 +141,7 @@
         <hr class="my-6" />
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between">
-                <h3 class="font-bold">Subtoataal</h3>
+                <h3 class="font-bold">Subtotaal</h3>
                 <p class="font-bold">€ {{ $block['price'] }}.00</p>
             </div>
             <div class="flex items-center justify-between">
