@@ -37,3 +37,5 @@ Route::get('/checkout', [DownloadDoc::class, 'index'])->name('checkout');
 Route::get('/success', [DownloadDoc::class, 'success'])->name('success');
 Route::get('/bedrijfsinformatie
 ', [PrivacyController::class, 'index'])->name('bedrijfsinformatie');
+Route::get('/wettelijke-informatie
+', [PrivacyController::class, 'wettelijke'])->name('wettelijke-informatie');

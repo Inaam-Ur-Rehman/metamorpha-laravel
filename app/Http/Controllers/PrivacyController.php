@@ -12,4 +12,9 @@ class PrivacyController extends Controller
         $page = Page::where('slug', 'bedrijfsinformatie')->firstOrFail();
         return view('pages.privacy-policy', compact('page'));
     }
+    public function wettelijke()
+    {
+        $page = Page::where('slug', 'wettelijke-informatie')->firstOrFail();
+        return view('pages.wettelijke-informatie', compact('page'));
+    }
 }
