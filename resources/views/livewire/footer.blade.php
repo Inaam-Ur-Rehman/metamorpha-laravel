@@ -69,11 +69,11 @@
                     class="flex items-center justify-center w-10 h-10 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center text-xl text-white fa-solid fa-phone "></i>
                 </a>
-                <a href="mailto:bart@metamorpha.be"
+                <a href="mailto:bart@metamorpha.be" target="_blank"
                     class="flex items-center justify-center w-10 h-10 p-2 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center text-2xl text-white fa-solid fa-envelope"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/bart-van-der-herten/"
+                <a href="https://www.linkedin.com/in/bart-van-der-herten/" target="_blank"
                     class="flex items-center justify-center w-10 h-10 p-2 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center w-5 text-2xl text-white fa-brands fa-linkedin-in"></i>
                 </a>
