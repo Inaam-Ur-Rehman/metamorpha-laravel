@@ -47,8 +47,8 @@
                 </label>
                 <select name="country" id="country" wire:model='country' wire:change='update'
                     class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" x-model="country">
-                    <option value="Belgium" selected>Belgium</option>
-                    <option value="Netherland">Netherland</option>
+                    <option value="Belgium" selected>België</option>
+                    <option value="Netherland">Nederland</option>
                 </select>
 
                 @error('country')
