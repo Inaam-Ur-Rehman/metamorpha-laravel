@@ -29,6 +29,10 @@
 </head>
 
 <body class="antialiased">
+    <a href="/contact"
+        class="w-12 h-12 fixed bottom-5 right-5 z-[99999]  rounded-full bg-theme-blue flex items-center justify-center cursor-pointer transition-all hover:scale-105">
+        <img src="/message.svg" alt="message" class="text-white ">
+    </a>
     @if (session()->has('success'))
         <div class="absolute p-4 rounded-md bg-green-50 top-5 right-5" x-data="{ show: true }" x-show="show"
             x-init="setTimeout(() => show = false, 5000)">
