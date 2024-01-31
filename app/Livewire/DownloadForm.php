@@ -42,7 +42,8 @@ class DownloadForm extends Component
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'phone' => $this->phone,
-            'company' => $this->company
+            'company' => $this->company,
+            'email' => $this->email,
         ]);
         if ($this->subscribed) {
             if (!Newsletter::where('email', $this->email)->exists()) {
