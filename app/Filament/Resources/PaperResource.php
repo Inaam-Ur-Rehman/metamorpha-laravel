@@ -33,6 +33,7 @@ class PaperResource extends Resource
                     ->required()
                     ->directory('papers'),
                 FileUpload::make('file')
+                    ->preserveFilenames()
                     ->required()
                     ->directory('public'),
                 TextInput::make('title')
