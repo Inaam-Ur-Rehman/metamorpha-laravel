@@ -34,7 +34,7 @@ class PaperResource extends Resource
                     ->directory('papers'),
                 FileUpload::make('file')
                     ->required()
-                    ->directory('papers'),
+                    ->directory('public'),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
