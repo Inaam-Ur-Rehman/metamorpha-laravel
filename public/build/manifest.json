@@ -3,6 +3,10 @@
     "file": "assets/arrow-left-aIYrFo-Q.svg",
     "src": "public/arrow-left.svg"
   },
+  "public/arrow-right.svg": {
+    "file": "assets/arrow-right-dH7kzu_s.svg",
+    "src": "public/arrow-right.svg"
+  },
   "resources/assets/fonts/Verdana-Bold.ttf": {
     "file": "assets/Verdana-Bold-w_-ZBCPs.ttf",
     "src": "resources/assets/fonts/Verdana-Bold.ttf"
@@ -48,7 +52,7 @@
     "src": "resources/assets/fonts/VerdanaPro-SemiBold.ttf"
   },
   "resources/css/app.css": {
-    "file": "assets/app-UehqubjL.css",
+    "file": "assets/app-C-8m2K-G.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },

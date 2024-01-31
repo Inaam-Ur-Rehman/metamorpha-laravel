@@ -15,33 +15,31 @@ class Hero extends PageBlock
             ->schema([
                 TextInput::make("heading")
                     ->label("Heading")
-                    ->maxLength(100)
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make("subHeading")
                     ->label("Sub Heading")
-                    ->maxLength(100)
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
+                // btnLabel,btnLink,text,video,poster
                 TextInput::make("btnLabel")
-                    ->label("Button Text")
-                    ->maxLength(100)
-                    ->required(),
+                    ->label("Button Label")
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make("btnLink")
                     ->label("Button Link")
-                    ->maxLength(255)
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make("text")
                     ->label("Text")
-                    ->maxLength(200)
+                    ->required()
+                    ->maxLength(255),
+                FileUpload::make("video")
+                    ->label("Video")
                     ->required(),
                 FileUpload::make("poster")
-                    ->directory("poster")
-                ->required() ,
-        FileUpload::make("video")
-                    ->directory("videos")
-                    ->maxSize("100000")
-                ->required()
-
-
+                    ->label("Poster")
+                    ->required()
             ]);
     }
 

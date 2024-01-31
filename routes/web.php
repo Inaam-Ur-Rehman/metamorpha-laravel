@@ -35,4 +35,5 @@ Route::get('/aanbod/verandering', [\App\Http\Controllers\VeranderingController::
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::get('/checkout', [DownloadDoc::class, 'index'])->name('checkout');
 Route::get('/success', [DownloadDoc::class, 'success'])->name('success');
-Route::get('/privacy-policy', [PrivacyController::class, 'index'])->name('privacy-policy');
+Route::get('/bedrijfsinformatie
+', [PrivacyController::class, 'index'])->name('bedrijfsinformatie');

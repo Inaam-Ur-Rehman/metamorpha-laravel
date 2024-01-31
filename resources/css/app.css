@@ -132,6 +132,7 @@ body{
     height: 40px;
     z-index: 99999999;
     left: -15px;
+    top: 50% !important;
 }
 .slick-prev:focus{
     background-color: #0F0147;
@@ -152,8 +153,7 @@ body{
     height: 40px;
     z-index: 99999999;
     right: -15px;
-    transform: rotate(180deg);
-
+    top: 50% !important;
 }
 .slick-next:focus{
     background-color: #0F0147;
@@ -163,7 +163,7 @@ body{
 }
 .slick-next::before{
     color: white;
-    content: url("/public/arrow-left.svg");
+    content: url("/public/arrow-right.svg");
     font-size: 2rem;
 }
 
