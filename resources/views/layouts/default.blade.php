@@ -7,11 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" rel="stylesheet" href="/slick.css" />
     <link type="text/css" rel="stylesheet" href="/slick-theme.css" />
-    <title>Laravel</title>
+    <title>
+        {{ isset($page->title) ? $page->title . ' | ' . 'Metamorpha' : 'Metamorpha' }}
+    </title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <style>
         [x-cloak] {
             display: none !important;
@@ -24,8 +30,8 @@
 
 <body class="antialiased">
     @if (session()->has('success'))
-        <div class="absolute p-4 rounded-md bg-green-50 top-5 right-5" {{-- hidden after 5 seconds --}} x-data="{ show: true }"
-            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+        <div class="absolute p-4 rounded-md bg-green-50 top-5 right-5" x-data="{ show: true }" x-show="show"
+            x-init="setTimeout(() => show = false, 5000)">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="w-5 h-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
