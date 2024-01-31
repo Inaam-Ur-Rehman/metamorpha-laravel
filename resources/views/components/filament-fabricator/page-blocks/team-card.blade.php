@@ -15,7 +15,7 @@
                 <span style="background-color: {{ $color }}"
                     class="absolute left-0 w-full h-3 -z-10 bottom-[0.2em] "></span>
             </h2>
-            <div class="mt-4 !font-v400 prose-base prose-ul:list-disc">
+            <div class="mt-4 !font-v400 prose-base prose-ul:list-disc prose-a:underline underline-offset-2">
                 {!! $content !!}
 
                 @if ($more_content)
@@ -61,7 +61,7 @@
                 <span style="background-color: {{ $color }}"
                     class="absolute left-0 w-full h-3 -z-10 bottom-[0.2em]"></span>
             </h2>
-            <div class="mt-4 !font-v400 prose-base prose-ul:list-disc">
+            <div class="mt-4 !font-v400 prose-base prose-ul:list-disc prose-a:underline underline-offset-2">
                 {!! $content !!}
 
                 @if ($more_content)
