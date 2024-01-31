@@ -65,15 +65,15 @@
         <div>
             <h2 class="font-bold !font-vp400 text-theme-blue">Neem contact op</h2>
             <div class="flex items-center gap-2 mt-4">
-                <a href="/"
+                <a href="/contact"
                     class="flex items-center justify-center w-10 h-10 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center text-xl text-white fa-solid fa-phone "></i>
                 </a>
-                <a href="/"
+                <a href="mailto:bart@metamorpha.be"
                     class="flex items-center justify-center w-10 h-10 p-2 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center text-2xl text-white fa-solid fa-envelope"></i>
                 </a>
-                <a href="/"
+                <a href="https://www.linkedin.com/in/bart-van-der-herten/"
                     class="flex items-center justify-center w-10 h-10 p-2 rounded-full bg-theme-blue hover:scale-105">
                     <i class="flex items-center justify-center w-5 text-2xl text-white fa-brands fa-linkedin-in"></i>
                 </a>
