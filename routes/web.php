@@ -39,6 +39,4 @@ Route::get('/bedrijfsinformatie
 ', [PrivacyController::class, 'index'])->name('bedrijfsinformatie');
 Route::get('/wettelijke-informatie
 ', [PrivacyController::class, 'wettelijke'])->name('wettelijke-informatie');
-Route::get('/kmo-portefeuille', function () {
-    return view('pages.kmo-portefeuille');
-})->name('kmo-portefeuille');
+Route::get('/kmo-portefeuille', [PrivacyController::class, 'portefeuille'])->name('kmo-portefeuille');

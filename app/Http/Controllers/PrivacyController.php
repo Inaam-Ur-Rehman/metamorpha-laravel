@@ -17,4 +17,9 @@ class PrivacyController extends Controller
         $page = Page::where('slug', 'wettelijke-informatie')->firstOrFail();
         return view('pages.wettelijke-informatie', compact('page'));
     }
+    public function portefeuille()
+    {
+        $page = Page::where('slug', 'kmo-portefeuille')->firstOrFail();
+        return view('pages.kmo-portefeuille', compact('page'));
+    }
 }
