@@ -63,6 +63,27 @@ class OrderResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->placeholder(__('Company')),
+                TextInput::make('order_id')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder(__('Order id')),
+                TextInput::make('paid_at')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder(__('Paid at')),
+                TextInput::make('transaction_id')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder(__('Transaction id')),
+                TextInput::make('payment_method')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder(__('Payment method')),
+                TextInput::make('payment_status')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder(__('Payment status')),
+
 
             ]);
     }

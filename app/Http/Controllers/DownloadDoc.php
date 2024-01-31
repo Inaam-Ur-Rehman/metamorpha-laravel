@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\DownloadFile;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -30,8 +31,23 @@ class DownloadDoc extends Controller
 
             if ($payment->isPaid()) {
                 Log::info('Payment received');
-                // dd($payment->metadata);
-                Mail::to("test@gmail.com")->send(new DownloadFile);
+                Order::create([
+                    'first_name' => $payment->metadata->first_name,
+                    'last_name' => $payment->metadata->last_name,
+                    'email' => $payment->metadata->email,
+                    'country' => $payment->metadata->country,
+                    'city' => $payment->metadata->city,
+                    'street' => $payment->metadata->street,
+                    'house_number' => $payment->metadata->house_number,
+                    'postal_code' => $payment->metadata->postal_code,
+                    'company' => $payment->metadata->company,
+                    'order_id' => $payment->metadata->order_id,
+                    'paid_at' => $payment->paidAt,
+                    'transaction_id' => $payment->id,
+                    'payment_method' => $payment->method,
+                    'payment_status' => $payment->status,
+                ]);
+                Mail::to($payment->metadata->email)->send(new DownloadFile);
                 Session::forget('paymentId');
                 return redirect()->route('inspiratiekaarten')->with('success', 'Bedankt voor uw bestelling! U ontvangt een email met de download link.');
             } else {
