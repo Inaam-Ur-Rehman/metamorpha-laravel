@@ -24,8 +24,9 @@
                         Bart@Metamorpha.be
                     </span>
                 </a>
-                <a href="/" class="block hover:underline underline-offset-4 decoration-2">Foto’s:
-                    www.сhristageeroms.com</a>
+                <a href="https://www.christageeroms.com/" target="_blank"
+                    class="block hover:underline underline-offset-4 decoration-2">Foto’s:
+                    www.christageeroms.com</a>
                 <a href="https://www.instagram.com/Christa_Geeroms_photo" class="block">
                     <span class="flex items-center gap-2">
                         <i class="fa fa-instagram"></i>
@@ -56,8 +57,8 @@
                 <a href="/aanbod/inspiratiekaarten"
                     class="block hover:underline underline-offset-4 decoration-2">Inspiratiekaarten</a>
                 <a href="/aanbod/boek" class="block hover:underline underline-offset-4 decoration-2">Boek</a>
-                <a href="/aanbod/verdieping"
-                    class="block hover:underline underline-offset-4 decoration-2">Verdieping</a>
+                {{-- <a href="/aanbod/verdieping"
+                    class="block hover:underline underline-offset-4 decoration-2">Verdieping</a> --}}
             </div>
         </div>
         <div>

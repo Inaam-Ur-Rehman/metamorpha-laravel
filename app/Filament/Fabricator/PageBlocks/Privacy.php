@@ -14,6 +14,8 @@ class Privacy extends PageBlock
         return Block::make('privacy')
             ->schema([
                 MarkdownEditor::make("content")
+                    ->fileAttachmentsDirectory('privacy')
+                    ->fileAttachmentsDisk('public')
                     ->required()
                     ->label("Content")
             ]);

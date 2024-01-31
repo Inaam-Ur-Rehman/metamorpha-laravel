@@ -25,7 +25,7 @@ class Navbar extends Component
                     ['name' => 'Levens in transitie', 'url' => '/aanbod/levens'],
                     ['name' => 'Inspiratiekaarten', 'url' => '/aanbod/inspiratiekaarten'],
                     ['name' => 'Boek', 'url' => '/aanbod/boek'],
-                    ['name' => 'Verdieping', 'url' => '/aanbod/verdieping'],
+                    // ['name' => 'Verdieping', 'url' => '/aanbod/verdieping'],
                 ]
             ],
             ['name' => 'Agenda', 'url' => 'https://calendly.com/bart-vanderherten'],
