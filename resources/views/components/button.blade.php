@@ -10,7 +10,7 @@
 ])
 
 @if ($color === 'primary')
-    <a href="{{ $href }}" type="{{ $type }}"
+    <a href="{{ $href }}" type="{{ $type }}" target="{{ $target }}"
         class="!flex items-center gap-3 px-2 py-2 pl-3 text-white duration-500 !font-vp600 rounded-full hover:scale-105 whitespace-nowrap bg-theme-blue max-w-max {{ $class }} ">
         {{ $label }}
         <span class="flex items-center justify-center w-8 h-8 bg-white rounded-full">
