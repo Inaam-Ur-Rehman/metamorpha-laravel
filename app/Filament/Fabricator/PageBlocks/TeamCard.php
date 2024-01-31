@@ -26,8 +26,7 @@ class TeamCard extends PageBlock
                     ->label('Content')
                     ->required(),
                 RichEditor::make('more_content')
-                    ->label('More Content')
-                    ->required(),
+                    ->label('More Content'),
                 FileUpload::make('image')
                     ->label('Image')
                     ->image()
