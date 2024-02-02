@@ -49,7 +49,7 @@ class DownloadDoc extends Controller
                 ]);
                 Mail::to($payment->metadata->email)->send(new DownloadFile);
                 Session::forget('paymentId');
-                return redirect()->route('inspiratiekaarten')->with('success', 'Bedankt voor uw bestelling! U ontvangt een email met de download link.');
+                return redirect()->route('inspiratiekaarten')->with('success', 'Uw bestelling is succesvol geplaatst.');
             } else {
                 Log::info('Payment not received');
                 return redirect()->route('home')->with('error', 'Er is iets misgegaan tijdens het verwerken van uw betaling.');
