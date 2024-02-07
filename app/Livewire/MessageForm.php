@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Contact;
 use App\Models\Newsletter;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class MessageForm extends Component
@@ -46,7 +47,7 @@ class MessageForm extends Component
             }
         }
 
-        Contact::create([
+        $res = Contact::create([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
@@ -56,7 +57,11 @@ class MessageForm extends Component
             'title' => $this->title
         ]);
         // Clear input fields.
+
+        Mail::to('bart@metamorpha.be')->send(new \App\Mail\Message($res));
+
         $this->reset();
+
 
         return session()->flash('message', 'Uw bericht is succesvol opgeslagen.');
     }

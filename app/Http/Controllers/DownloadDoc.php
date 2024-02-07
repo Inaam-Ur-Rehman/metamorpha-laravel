@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\DownloadFile;
+use App\Mail\OrderPlaced;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +32,7 @@ class DownloadDoc extends Controller
 
             if ($payment->isPaid()) {
                 Log::info('Payment received');
-                Order::create([
+                $ord = Order::create([
                     'first_name' => $payment->metadata->first_name,
                     'last_name' => $payment->metadata->last_name,
                     'email' => $payment->metadata->email,
@@ -47,7 +48,10 @@ class DownloadDoc extends Controller
                     'payment_method' => $payment->method,
                     'payment_status' => $payment->status,
                 ]);
-                Mail::to($payment->metadata->email)->send(new DownloadFile);
+                Mail::to(['bart@metamorpha.be', $payment->metadata->email])->send(
+                    new OrderPlaced($ord)
+                );
+                // TODO: Implement the send message method
                 Session::forget('paymentId');
                 return redirect()->route('inspiratiekaarten')->with('success', 'Uw bestelling is succesvol geplaatst.');
             } else {

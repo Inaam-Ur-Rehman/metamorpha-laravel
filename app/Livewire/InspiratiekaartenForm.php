@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Newsletter;
 use App\Models\Question;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class InspiratiekaartenForm extends Component
@@ -25,7 +26,7 @@ class InspiratiekaartenForm extends Component
             'message' => 'required',
         ]);
 
-        Question::create([
+        $quest = Question::create([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
@@ -34,12 +35,14 @@ class InspiratiekaartenForm extends Component
         ]);
 
         if ($this->newsletter) {
-            if(!Newsletter::where('email', $this->email)->exists()) {
+            if (!Newsletter::where('email', $this->email)->exists()) {
                 Newsletter::create([
                     'email' => $this->email,
                 ]);
             }
         }
+
+        Mail::to('bart@metamorpha.be')->send(new \App\Mail\AskedQuestion($quest));
 
         $this->reset();
 

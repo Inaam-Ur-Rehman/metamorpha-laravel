@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Download;
 use App\Models\Newsletter;
 use App\Models\Paper;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class DownloadForm extends Component
@@ -38,7 +39,7 @@ class DownloadForm extends Component
     public function save()
     {
         $this->validate();
-        Download::create([
+        $form = Download::create([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'phone' => $this->phone,
@@ -52,6 +53,8 @@ class DownloadForm extends Component
                 ]);
             }
         }
+
+        Mail::to('bart@metamorpha.be')->send(new \App\Mail\DownloadPaper($form));
         session()->flash('message', 'Bedankt voor het downloaden!');
 
         $file = Paper::where('slug', $this->slug)->firstOrFail();
