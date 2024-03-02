@@ -1,6 +1,6 @@
 @props([
     'color' => 'primary',
-    'icon' => 'fa fa-handshake-o',
+    'icon' => 'fa-solid fa-handshake-simple',
     'label' => '',
     'class' => '',
     'disabled' => false,

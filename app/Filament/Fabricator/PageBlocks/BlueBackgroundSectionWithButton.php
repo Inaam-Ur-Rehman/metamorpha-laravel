@@ -27,7 +27,7 @@ class BlueBackgroundSectionWithButton extends PageBlock
                             ->required(),
                         TextInput::make('icon')
                             ->label('Icon')
-                            ->default('arrow-right')
+                            ->default('fa-solid fa-handshake-simple')
                     ])->minItems(1)->maxItems(2),
             ]);
     }
