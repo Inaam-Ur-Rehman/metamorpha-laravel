@@ -3,6 +3,7 @@
 namespace App\Filament\Fabricator\PageBlocks;
 
 use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Z3d0X\FilamentFabricator\PageBlocks\PageBlock;
@@ -16,15 +17,18 @@ class BlueBackgroundSectionWithButton extends PageBlock
                 RichEditor::make('content')
                     ->label('Content')
                     ->required(),
-                TextInput::make('button_text')
-                    ->label('Button Text')
-                    ->required(),
-                TextInput::make('button_link')
-                    ->label('Button Link')
-                    ->required(),
-                TextInput::make('icon')
-                    ->label('Icon')
-                    ->required(),
+                Repeater::make('buttons')
+                    ->schema([
+                        TextInput::make('text')
+                            ->label('Text')
+                            ->required(),
+                        TextInput::make('url')
+                            ->label('URL')
+                            ->required(),
+                        TextInput::make('icon')
+                            ->label('Icon')
+                            ->default('arrow-right')
+                    ])->minItems(1)->maxItems(2),
             ]);
     }
 
