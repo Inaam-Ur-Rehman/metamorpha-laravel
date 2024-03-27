@@ -135,7 +135,7 @@
                 </label>
                 @error('kmo') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
-            <a href="/" class="underline underline-offset-2 font-bold">
+            <a href="/wettelijke-informatie" class="underline underline-offset-2 font-bold">
                 Algemene Voorwaarden <span class="text-red-500">*</span>
             </a>
             <div class="flex gap-2">
@@ -149,7 +149,7 @@
             <p>
                 Klik op ’algemene’ voorwaarden (hierboven) om ze nog eens te raadplegen.
             </p>
-            <a href="/" class="underline underline-offset-2 font-bold">
+            <a href="/wettelijke-informatie" class="underline underline-offset-2 font-bold">
                 Privacybeleid <span class="text-red-500">*</span>
             </a>
             <div class="flex gap-2">
