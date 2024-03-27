@@ -5,7 +5,7 @@ namespace App\Filament\Fabricator\PageBlocks;
 use Filament\Forms\Components\Builder\Block;
 use Z3d0X\FilamentFabricator\PageBlocks\PageBlock;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TextArea;
+use Filament\Forms\Components\Textarea;
 
 
 class EventsHero extends PageBlock
@@ -17,7 +17,7 @@ class EventsHero extends PageBlock
                 TextInput::make('heading')
                     ->label('Heading')
                     ->placeholder('Enter a heading'),
-                TextArea::make('content')
+                Textarea::make('content')
                     ->label('Content')
                     ->placeholder('Enter some content'),
                 TextInput::make('cta')
