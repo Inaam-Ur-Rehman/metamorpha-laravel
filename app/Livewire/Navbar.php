@@ -32,6 +32,7 @@ class Navbar extends Component
             ['name' => 'Getuigenissen', 'url' => '/getuigenissen'],
             ['name' => 'Inspiratie', 'url' => '/inspiratie'],
             ['name' => 'Team', 'url' => '/team'],
+            ['name' => 'Evenementen', 'url' => '/evenementen'],
         ];
 
         return view(

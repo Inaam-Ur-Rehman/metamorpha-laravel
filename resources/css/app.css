@@ -177,3 +177,31 @@ body{
         display: none !important;
     }
 }
+.content h2{
+    position: relative;
+}
+.content h2:after{
+    content: "";
+    position: absolute;
+    display: block;
+    background-color: #FFDE59;
+    height: 15px;
+    width: 100%;
+    bottom: 5px;
+    left: 0;
+    z-index: -1;
+}
+.decoration{
+    position: relative;
+}
+.decoration:after{
+    content: "";
+    position: absolute;
+    display: block;
+    background-color: #FFDE59;
+    height: 30%;
+    width: 100%;
+    bottom: 5px;
+    left: 0;
+    z-index: -1;
+}

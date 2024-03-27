@@ -46,6 +46,7 @@
                 <a href="/getuigenissen" class="block hover:underline underline-offset-4 decoration-2">Getuigenissen</a>
                 <a href="/inspiratie" class="block hover:underline underline-offset-4 decoration-2">Inspiratie</a>
                 <a href="/team" class="block hover:underline underline-offset-4 decoration-2">Team</a>
+                <a href="/evenementen" class="block hover:underline underline-offset-4 decoration-2">Evenementen</a>
             </div>
         </div>
         <div>

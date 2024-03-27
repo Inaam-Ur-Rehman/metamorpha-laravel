@@ -1,64 +1,65 @@
 {
   "public/arrow-left.svg": {
-    "file": "assets/arrow-left-aIYrFo-Q.svg",
+    "file": "assets/arrow-left-BohisWj5.svg",
     "src": "public/arrow-left.svg"
   },
   "public/arrow-right.svg": {
-    "file": "assets/arrow-right-dH7kzu_s.svg",
+    "file": "assets/arrow-right-B0fuTO7-.svg",
     "src": "public/arrow-right.svg"
   },
   "resources/assets/fonts/Verdana-Bold.ttf": {
-    "file": "assets/Verdana-Bold-w_-ZBCPs.ttf",
+    "file": "assets/Verdana-Bold-DD_5kEI-.ttf",
     "src": "resources/assets/fonts/Verdana-Bold.ttf"
   },
   "resources/assets/fonts/Verdana.ttf": {
-    "file": "assets/Verdana-Ht8zl3d6.ttf",
+    "file": "assets/Verdana-e3zOXd3p.ttf",
     "src": "resources/assets/fonts/Verdana.ttf"
   },
   "resources/assets/fonts/VerdanaPro-Bold.ttf": {
-    "file": "assets/VerdanaPro-Bold-H7sZ7rs5.ttf",
+    "file": "assets/VerdanaPro-Bold-fuxnuuzk.ttf",
     "src": "resources/assets/fonts/VerdanaPro-Bold.ttf"
   },
   "resources/assets/fonts/VerdanaPro-CondBlack.ttf": {
-    "file": "assets/VerdanaPro-CondBlack-CiiKJMls.ttf",
+    "file": "assets/VerdanaPro-CondBlack-KKIokyWy.ttf",
     "src": "resources/assets/fonts/VerdanaPro-CondBlack.ttf"
   },
   "resources/assets/fonts/VerdanaPro-CondBold.ttf": {
-    "file": "assets/VerdanaPro-CondBold-M2PDM3di.ttf",
+    "file": "assets/VerdanaPro-CondBold-zY8Mzd2K.ttf",
     "src": "resources/assets/fonts/VerdanaPro-CondBold.ttf"
   },
   "resources/assets/fonts/VerdanaPro-CondLight.ttf": {
-    "file": "assets/VerdanaPro-CondLight-6lW_BS2U.ttf",
+    "file": "assets/VerdanaPro-CondLight-DqVb8FLZ.ttf",
     "src": "resources/assets/fonts/VerdanaPro-CondLight.ttf"
   },
   "resources/assets/fonts/VerdanaPro-CondRegular.ttf": {
-    "file": "assets/VerdanaPro-CondRegular-Yd3Wo9cz.ttf",
+    "file": "assets/VerdanaPro-CondRegular-Bh3daj1z.ttf",
     "src": "resources/assets/fonts/VerdanaPro-CondRegular.ttf"
   },
   "resources/assets/fonts/VerdanaPro-CondSemiBold.ttf": {
-    "file": "assets/VerdanaPro-CondSemiBold-zucQuOH_.ttf",
+    "file": "assets/VerdanaPro-CondSemiBold-DO5xC44f.ttf",
     "src": "resources/assets/fonts/VerdanaPro-CondSemiBold.ttf"
   },
   "resources/assets/fonts/VerdanaPro-Light.ttf": {
-    "file": "assets/VerdanaPro-Light-PEqt4SpL.ttf",
+    "file": "assets/VerdanaPro-Light-8Sq3hKkv.ttf",
     "src": "resources/assets/fonts/VerdanaPro-Light.ttf"
   },
   "resources/assets/fonts/VerdanaPro-Regular.ttf": {
-    "file": "assets/VerdanaPro-Regular-abUUVSD1.ttf",
+    "file": "assets/VerdanaPro-Regular-BptRRVIP.ttf",
     "src": "resources/assets/fonts/VerdanaPro-Regular.ttf"
   },
   "resources/assets/fonts/VerdanaPro-SemiBold.ttf": {
-    "file": "assets/VerdanaPro-SemiBold-jBgO2C0_.ttf",
+    "file": "assets/VerdanaPro-SemiBold-CMGA7YLT.ttf",
     "src": "resources/assets/fonts/VerdanaPro-SemiBold.ttf"
   },
   "resources/css/app.css": {
-    "file": "assets/app-G7Kj4tkL.css",
-    "isEntry": true,
-    "src": "resources/css/app.css"
+    "file": "assets/app-DtDzrjsh.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-Mo0JqMat.js",
-    "isEntry": true,
-    "src": "resources/js/app.js"
+    "file": "assets/app-BCZ3jrA0.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
   }
 }
