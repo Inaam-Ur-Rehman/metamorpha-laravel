@@ -11,7 +11,7 @@
   gtag('js', new Date());
 
   gtag('config', 'G-0F11FHP9ML');
-{{--</script>--}}
+</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" rel="stylesheet" href="/slick.css" />
