@@ -15,7 +15,7 @@
                         <span class="w-full border-b-2 h-1 border-theme-black"></span>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-12 md:items-center gap-8">
-                        <p class="lg:col-span-2 capitalize flex flex-col gap-2">
+                        <p class="lg:col-span-2 capitalize flex flex-col gap-2 self-start">
                        <span class="font-vpc900 text-3xl">
                             {{Jenssegers\Date\Date::parse($event->startDate)->format('d')}}
                        </span>
