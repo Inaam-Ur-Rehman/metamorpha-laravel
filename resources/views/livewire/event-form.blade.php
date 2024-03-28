@@ -1,6 +1,8 @@
 
 <div>
-    <div
+    <form
+        wire:submit.prevent="save"
+        method="POST"
         class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="flex flex-col gap-2">
             <div class="flex flex-col gap-2">
@@ -88,10 +90,7 @@
                 <input type="tel" id="phone" name="phone" wire:model="phone" class="w-full p-2 border border-gray-300 rounded">
                 @error('phone') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
-{{--            Wat is je huidige job?--}}
-{{--            Ik ben werknemer--}}
-{{--            Ik ben zelfstandig ondernemer--}}
-{{--            Andere--}}
+
             <div class="flex flex-col gap-2">
                 <label for="job" class="font-bold">
                     Wat is je huidige job?
@@ -99,7 +98,7 @@
                 <select id="job" name="job" wire:model="job" class="w-full p-2 border border-gray-300 rounded">
                     <option value="werknemer">Ik ben werknemer</option>
                     <option value="zelfstandig ondernemer">Ik ben zelfstandig ondernemer</option>
-                    <option value="andere">Andere</option>
+                    <option value="andere" selected>Andere</option>
                 </select>
                 @error('job') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
@@ -138,11 +137,13 @@
             <a href="/wettelijke-informatie" class="underline underline-offset-2 font-bold">
                 Algemene Voorwaarden <span class="text-red-500">*</span>
             </a>
-            <div class="flex gap-2">
-                <input type="checkbox" id="terms" name="terms" wire:model="terms" class="border border-gray-300 rounded">
-                <label for="terms" >
-                    Ik heb de algemene voorwaarden gelezen en verklaar mij akkoord.
-                </label>
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-1">
+                    <input type="checkbox" id="terms" name="terms" wire:model="terms" class="border border-gray-300 rounded">
+                    <label for="terms" >
+                        Ik heb de algemene voorwaarden gelezen en verklaar mij akkoord.
+                    </label>
+                </div>
                 @error('terms') <span class="text-red-500">{{ $message }}</span> @enderror
 
             </div>
@@ -152,19 +153,25 @@
             <a href="/wettelijke-informatie" class="underline underline-offset-2 font-bold">
                 Privacybeleid <span class="text-red-500">*</span>
             </a>
-            <div class="flex gap-2">
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-1">
                 <input type="checkbox" id="privacy" name="privacy" wire:model="privacy" class="border border-gray-300 rounded">
                 <label for="privacy" >
                     Ik heb het privacybeleid gelezen en verklaar mij akkoord.
                 </label>
+                </div>
                 @error('privacy') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
         </div>
-    </div>
-    <x-button
-        type="VERZENDEN"
-        label="Schrijf nu in"
-        icon="fa-solid fa-envelope-circle-check"
-        class="uppercase mx-auto my-12"
-    />
+        <button
+            type="submit"
+            class="col-span-full max-w-max mx-auto p-2 text-white bg-theme-blue rounded-full hover:bg-theme-dark-blue
+            cursor-pointer hover:scale-105 transition-all duration-700 ease-in-out
+            "
+        >
+            VERZENDEN
+            <i class="fa-solid fa-envelope-circle-check bg-white text-theme-blue rounded-full p-1"></i>
+        </button>
+    </form>
+
 </div>

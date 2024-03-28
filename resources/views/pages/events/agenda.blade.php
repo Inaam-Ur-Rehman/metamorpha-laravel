@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="max-w-8xl mx-auto my-4 px-4">
-    <h1 class="text-6xl !font-vpc900 decoration max-w-max my-8">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl !font-vpc900 decoration max-w-max my-8">
         EVENEMENTEN
     </h1>
         <div class="flex flex-col gap-8">

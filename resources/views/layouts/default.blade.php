@@ -4,7 +4,7 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-:<script async src="https://www.googletagmanager.com/gtag/js?id=G-0F11FHP9ML"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0F11FHP9ML"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -102,7 +102,6 @@
     @endif
     @livewire('navbar')
     @yield('main')
-    {{--    <x-filament-fabricator::page-blocks :blocks="$page->blocks" /> --}}
     @livewire('footer')
     @vite('resources/js/app.js')
     <script src="https://kit.fontawesome.com/ac0911dcb0.js" crossorigin="anonymous"></script>

@@ -12,7 +12,7 @@
                      <h2 class="text-3xl max-w-lg text-center !font-vpc600 uppercase text-theme-yellow">
                          {{$event->title}}
                      </h2>
-                     <p class="text-base text-theme-yellow !font-v700">
+                     <p class="text-base text-theme-yellow !font-v700 text-center md:text-left">
                          {{$event->subTitle}}
                      </p>
                      <p class="text-white text-center px-6">

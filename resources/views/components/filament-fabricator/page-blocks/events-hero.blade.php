@@ -2,7 +2,7 @@
 @props(['heading','content','cta','cta_url'])
 <div class="px-4 py-4 md:py-8">
     <div class="max-w-8xl mx-auto">
-        <h1 class="relative font-vpc900 text-7xl text-center my-6 uppercase max-w-max mx-auto">
+        <h1 class="relative font-vpc900 text-4xl md:text-7xl text-center my-6 uppercase max-w-max mx-auto">
             {{$heading}}
             <span
                 style="background-color: #FFDE59"

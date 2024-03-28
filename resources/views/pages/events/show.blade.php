@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="max-w-8xl mx-auto my-4 px-4">
-        <h1 class="text-5xl lg:text-7xl !font-vpc700 uppercase leading-snug">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl !font-vpc700 uppercase leading-snug">
             {{ $event->title }}
         </h1>
 
@@ -33,9 +33,8 @@
                     x-show="play"
                 ></i>
             </button>
-            <video class="w-full  -z-10" muted
+            <video class="w-full  -z-10"
             >
-
                 <source src="{{ Storage::url($event->video) }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
