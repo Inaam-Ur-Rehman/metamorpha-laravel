@@ -52,12 +52,12 @@
     "src": "resources/assets/fonts/VerdanaPro-SemiBold.ttf"
   },
   "resources/css/app.css": {
-    "file": "assets/app-5bg07XJm.css",
+    "file": "assets/app-RWC7wiZJ.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-Mo0JqMat.js",
+    "file": "assets/app-2z459XfQ.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }
