@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class EventsResource extends Resource
 {
@@ -54,9 +55,9 @@ class EventsResource extends Resource
                 Forms\Components\Section::make('Banner Block')->schema([
                     Forms\Components\FileUpload::make('bannerImage')->label('Banner Image')
                         ->disk('public')->directory('events'),
-                    Forms\Components\MarkdownEditor::make('bannerText')->label('Banner Text'),
+                    Forms\Components\MarkdownEditor::make('bannerText')->label('Banner Text (use    ==divide==    to split the text into two parts)'),
                 ])->collapsible(),
-                Forms\Components\MarkdownEditor::make('description')->label('Description')->required()->columnSpanFull(),
+                TinyEditor::make('description')->profile('default')->label('Description')->required()->columnSpanFull()->fileAttachmentsDisk('public')->fileAttachmentsVisibility('public')->fileAttachmentsDirectory('uploads'),
                 Forms\Components\Checkbox::make("status")->default(false)->label("Active ?"),
             ]);
     }

@@ -4,14 +4,14 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0F11FHP9ML"></script>
+{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-0F11FHP9ML"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-0F11FHP9ML');
-</script>
+</script> --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" rel="stylesheet" href="/slick.css" />
@@ -105,7 +105,7 @@
     @livewire('footer')
     @vite('resources/js/app.js')
     <script src="https://kit.fontawesome.com/ac0911dcb0.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/slick.min.js"></script>
+     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     @livewireScripts
 </body>
 

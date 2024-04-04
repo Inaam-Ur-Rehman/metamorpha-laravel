@@ -1,4 +1,5 @@
-
+@import "video.js/dist/video-js.css";
+@import "@videojs/themes/dist/fantasy/index.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +9,17 @@
         writing-mode: vertical-rl;
         text-transform: uppercase;
     }
+}
+
+.vjs-theme-fantasy .vjs-big-play-button {
+    color: #0f0147;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    line-height: 60px;
 }
 
 /* 100 – Thin
@@ -22,48 +34,47 @@
 
 /* fonts  */
 
-@font-face{
-    font-family: 'Verdana';
-    src: url('~font/Verdana.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana";
+    src: url("~font/Verdana.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Bold';
-    src: url('~font/Verdana-Bold.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Bold";
+    src: url("~font/Verdana-Bold.ttf") format("truetype");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
 }
 
-
 /* verdana pro  */
 
-@font-face{
-    font-family: 'Verdana Pro Light';
-    src: url('~font/VerdanaPro-Light.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Light";
+    src: url("~font/VerdanaPro-Light.ttf") format("truetype");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Regular';
-    src: url('~font/VerdanaPro-Regular.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Regular";
+    src: url("~font/VerdanaPro-Regular.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Semi Bold';
-    src: url('~font/VerdanaPro-SemiBold.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Semi Bold";
+    src: url("~font/VerdanaPro-SemiBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Bold';
-    src: url('~font/VerdanaPro-Bold.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Bold";
+    src: url("~font/VerdanaPro-Bold.ttf") format("truetype");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -71,44 +82,44 @@
 
 /* verdana pro cond */
 
-@font-face{
-    font-family: 'Verdana Pro Cond Light';
-    src: url('~font/VerdanaPro-CondLight.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Cond Light";
+    src: url("~font/VerdanaPro-CondLight.ttf") format("truetype");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Cond Regular';
-    src: url('~font/VerdanaPro-CondRegular.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Cond Regular";
+    src: url("~font/VerdanaPro-CondRegular.ttf") format("truetype");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Cond Semi Bold';
-    src: url('~font/VerdanaPro-CondSemiBold.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Cond Semi Bold";
+    src: url("~font/VerdanaPro-CondSemiBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Cond Bold';
-    src: url('~font/VerdanaPro-CondBold.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Cond Bold";
+    src: url("~font/VerdanaPro-CondBold.ttf") format("truetype");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
 }
-@font-face{
-    font-family: 'Verdana Pro Cond Black';
-    src: url('~font/VerdanaPro-CondBlack.ttf') format('truetype');
+@font-face {
+    font-family: "Verdana Pro Cond Black";
+    src: url("~font/VerdanaPro-CondBlack.ttf") format("truetype");
     font-style: normal;
     font-weight: 900;
     font-display: swap;
 }
 
-body{
-    font-family: 'Verdana', sans-serif;
+body {
+    font-family: "Verdana", sans-serif;
 }
 
 .heading-hero {
@@ -125,8 +136,8 @@ body{
     text-align: center;
     margin: 2rem 0;
 }
-.slick-prev{
-    background-color: #0F0147;
+.slick-prev {
+    background-color: #0f0147;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -134,20 +145,19 @@ body{
     left: -15px;
     top: 50% !important;
 }
-.slick-prev:focus{
-    background-color: #0F0147;
+.slick-prev:focus {
+    background-color: #0f0147;
 }
-.slick-prev:hover{
-    background-color: #0F0147;
+.slick-prev:hover {
+    background-color: #0f0147;
 }
-.slick-prev::before{
-
+.slick-prev::before {
     color: white;
     content: url("/public/arrow-left.svg");
     font-size: 2rem;
 }
-.slick-next{
-    background-color: #0F0147;
+.slick-next {
+    background-color: #0f0147;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -155,50 +165,50 @@ body{
     right: -15px;
     top: 50% !important;
 }
-.slick-next:focus{
-    background-color: #0F0147;
+.slick-next:focus {
+    background-color: #0f0147;
 }
-.slick-next:hover{
-    background-color: #0F0147;
+.slick-next:hover {
+    background-color: #0f0147;
 }
-.slick-next::before{
+.slick-next::before {
     color: white;
     content: url("/public/arrow-right.svg");
     font-size: 2rem;
 }
 
 .custom {
-/*    test has a 20px height line behind the text as highlight*/
-
+    /*    test has a 20px height line behind the text as highlight*/
 }
 
 @media screen and (max-width: 768px) {
-    .slick-next, .slick-prev {
+    .slick-next,
+    .slick-prev {
         display: none !important;
     }
 }
-.content h2{
+.content h2 {
     position: relative;
 }
-.content h2:after{
+.content h2:after {
     content: "";
     position: absolute;
     display: block;
-    background-color: #FFDE59;
+    background-color: #ffde59;
     height: 15px;
     width: 100%;
     bottom: 5px;
     left: 0;
     z-index: -1;
 }
-.decoration{
+.decoration {
     position: relative;
 }
-.decoration:after{
+.decoration:after {
     content: "";
     position: absolute;
     display: block;
-    background-color: #FFDE59;
+    background-color: #ffde59;
     height: 30%;
     width: 100%;
     bottom: 5px;

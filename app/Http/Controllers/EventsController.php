@@ -23,18 +23,21 @@ class EventsController extends Controller
     public function show($slug)
     {
         $event = Events::where('slug', $slug)->firstOrFail();
-        // get the bannerText from event and then take the first 500 words
+        // get the bannerText from event and then split it into two parts on basis of (==divide==) string
         // assign it to variable firstText
         // assign the rest of the text to variable secondText
         $bannerText = $event->bannerText;
-        // if length of bannerText is less than 1500, assign it to firstText
-        if (strlen($bannerText) < 1500) {
-            $firstText = $bannerText;
-            $secondText = '';
+        
+        $firstText = '';
+        $secondText = '';
+
+        if (strpos($bannerText, '==divide==') !== false) {
+            $firstText = substr($bannerText, 0, strpos($bannerText, '==divide=='));
+            $secondText = substr($bannerText, strpos($bannerText, '==divide==') + 10);
         } else {
-            $firstText = substr($bannerText, 0, 1500);
-            $secondText = substr($bannerText, 1500);
+            $firstText = $bannerText;
         }
+        
         return view('pages.events.show', [
             'event' => $event,
             'firstText' => $firstText,

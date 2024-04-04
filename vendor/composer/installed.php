@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e73e46c9994d45257da9efb53d571d26c1a58d0a',
+        'reference' => '1b1b8c81098d70b699ec397127b67dc3b6b41fe9',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -589,7 +589,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e73e46c9994d45257da9efb53d571d26c1a58d0a',
+            'reference' => '1b1b8c81098d70b699ec397127b67dc3b6b41fe9',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -747,6 +747,15 @@
             'install_path' => __DIR__ . '/../mockery/mockery',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'mohamedsabil83/filament-forms-tinyeditor' => array(
+            'pretty_version' => 'v2.3.2',
+            'version' => '2.3.2.0',
+            'reference' => '659fe09fb11e5c0913900a32bd16cef01715f56e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mohamedsabil83/filament-forms-tinyeditor',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'mollie/laravel-mollie' => array(
             'pretty_version' => 'v2.25.0',

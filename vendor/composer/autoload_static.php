@@ -169,6 +169,7 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
             'Monolog\\' => 8,
             'Mollie\\Laravel\\' => 15,
             'Mollie\\Api\\' => 11,
+            'Mohamedsabil83\\FilamentFormsTinyeditor\\' => 39,
             'Mockery\\' => 8,
             'Masterminds\\' => 12,
         ),
@@ -588,6 +589,10 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
         array (
             0 => __DIR__ . '/..' . '/mollie/mollie-api-php/src',
         ),
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src',
+        ),
         'Mockery\\' => 
         array (
             0 => __DIR__ . '/..' . '/mockery/mockery/library/Mockery',
@@ -863,6 +868,10 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
         'App\\Filament\\Fabricator\\PageBlocks\\TestimonialCard' => __DIR__ . '/../..' . '/app/Filament/Fabricator/PageBlocks/TestimonialCard.php',
         'App\\Filament\\Fabricator\\PageBlocks\\TextBlockWithBlueBackground' => __DIR__ . '/../..' . '/app/Filament/Fabricator/PageBlocks/TextBlockWithBlueBackground.php',
         'App\\Filament\\Fabricator\\PageBlocks\\TextWithLogo' => __DIR__ . '/../..' . '/app/Filament/Fabricator/PageBlocks/TextWithLogo.php',
+        'App\\Filament\\Resources\\BookedEventsResource' => __DIR__ . '/../..' . '/app/Filament/Resources/BookedEventsResource.php',
+        'App\\Filament\\Resources\\BookedEventsResource\\Pages\\CreateBookedEvents' => __DIR__ . '/../..' . '/app/Filament/Resources/BookedEventsResource/Pages/CreateBookedEvents.php',
+        'App\\Filament\\Resources\\BookedEventsResource\\Pages\\EditBookedEvents' => __DIR__ . '/../..' . '/app/Filament/Resources/BookedEventsResource/Pages/EditBookedEvents.php',
+        'App\\Filament\\Resources\\BookedEventsResource\\Pages\\ListBookedEvents' => __DIR__ . '/../..' . '/app/Filament/Resources/BookedEventsResource/Pages/ListBookedEvents.php',
         'App\\Filament\\Resources\\ContactResource' => __DIR__ . '/../..' . '/app/Filament/Resources/ContactResource.php',
         'App\\Filament\\Resources\\ContactResource\\Pages\\CreateContact' => __DIR__ . '/../..' . '/app/Filament/Resources/ContactResource/Pages/CreateContact.php',
         'App\\Filament\\Resources\\ContactResource\\Pages\\EditContact' => __DIR__ . '/../..' . '/app/Filament/Resources/ContactResource/Pages/EditContact.php',
@@ -924,6 +933,7 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Livewire\\CheckoutForm' => __DIR__ . '/../..' . '/app/Livewire/CheckoutForm.php',
         'App\\Livewire\\DownloadForm' => __DIR__ . '/../..' . '/app/Livewire/DownloadForm.php',
+        'App\\Livewire\\EventForm' => __DIR__ . '/../..' . '/app/Livewire/EventForm.php',
         'App\\Livewire\\Footer' => __DIR__ . '/../..' . '/app/Livewire/Footer.php',
         'App\\Livewire\\InspiratiekaartenForm' => __DIR__ . '/../..' . '/app/Livewire/InspiratiekaartenForm.php',
         'App\\Livewire\\MessageForm' => __DIR__ . '/../..' . '/app/Livewire/MessageForm.php',
@@ -932,6 +942,7 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
         'App\\Mail\\DownloadPaper' => __DIR__ . '/../..' . '/app/Mail/DownloadPaper.php',
         'App\\Mail\\Message' => __DIR__ . '/../..' . '/app/Mail/Message.php',
         'App\\Mail\\OrderPlaced' => __DIR__ . '/../..' . '/app/Mail/OrderPlaced.php',
+        'App\\Models\\BookedEvents' => __DIR__ . '/../..' . '/app/Models/BookedEvents.php',
         'App\\Models\\Contact' => __DIR__ . '/../..' . '/app/Models/Contact.php',
         'App\\Models\\Download' => __DIR__ . '/../..' . '/app/Models/Download.php',
         'App\\Models\\Events' => __DIR__ . '/../..' . '/app/Models/Events.php',
@@ -5282,6 +5293,8 @@ class ComposerStaticInitee57f22bb62584c00c3c6d476878c472
         'Mockery\\Undefined' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Undefined.php',
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\Components\\TinyEditor' => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src/Components/TinyEditor.php',
+        'Mohamedsabil83\\FilamentFormsTinyeditor\\FilamentFormsTinyeditorServiceProvider' => __DIR__ . '/..' . '/mohamedsabil83/filament-forms-tinyeditor/src/FilamentFormsTinyeditorServiceProvider.php',
         'Mollie\\Api\\CompatibilityChecker' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/CompatibilityChecker.php',
         'Mollie\\Api\\Endpoints\\BalanceEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/BalanceEndpoint.php',
         'Mollie\\Api\\Endpoints\\BalanceReportEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/BalanceReportEndpoint.php',
