@@ -58,19 +58,19 @@ class CheckoutForm extends Component
     public function update()
     {
         if ($this->country == 'Belgium') {
-            $this->total_cost = $this->total_cost;
+            $this->total_cost = intval($this->total_cost);
         } else {
-            $this->total_cost = $this->total_cost + 4;
+            $this->total_cost = intval($this->total_cost) + 4;
         }
     }
 
     public function quantityUpdate(){
         if ($this->country == 'Belgium') {
             $this->quantity = $this->quantity;
-            $this->total_cost = $this->total_cost * $this->quantity;
+            $this->total_cost = intval($this->total_cost) * intval($this->quantity);
         } else {
             $this->quantity = $this->quantity;
-            $this->total_cost = ($this->total_cost + 4) * $this->quantity;
+            $this->total_cost = (intval($this->total_cost) + 4) * intval($this->quantity);
         }
     }
 
@@ -93,7 +93,7 @@ class CheckoutForm extends Component
             "amount" => [
                 "currency" => "EUR",
                 // convert cost to string
-                "value" => $this->country == 'Belgium' ? number_format($this->total_cost, 2, '.', '') : number_format($this->total_cost + 4, 2, '.', ''),
+                "value" => $this->country == 'Belgium' ? number_format(intval($this->total_cost), 2, '.', '') : number_format(intval($this->total_cost) + 4, 2, '.', ''),
                 // You must send the correct number of decimals, thus we enforce the use of strings
             ],
             "description" => "Inspiratiekaarten voor werkende mensen",
@@ -130,12 +130,12 @@ class CheckoutForm extends Component
         }
         $block = $blocks[0];
         if($this->country == 'Belgium'){
-            $this->total_cost = $block['price']*$this->quantity;
+            $this->total_cost = intval($block['price'])*intval($this->quantity);
         } else if ($this->country == 'Netherland') {
-            $this->total_cost = ($block['price'] + 4)*$this->quantity;
+            $this->total_cost = (intval($block['price']) + 4)*intval($this->quantity);
         }
         else{
-            $this->total_cost = $block['price']*$this->quantity;
+            $this->total_cost = intval($block['price'])*intval($this->quantity);
         }
         return view('livewire.checkout-form', [
             'block' => $block,
