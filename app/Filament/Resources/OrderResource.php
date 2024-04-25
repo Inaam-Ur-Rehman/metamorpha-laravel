@@ -60,9 +60,14 @@ class OrderResource extends Resource
                     ->maxLength(255)
                     ->placeholder(__('Postal code')),
                 TextInput::make('company')
-                    ->required()
                     ->maxLength(255)
                     ->placeholder(__('Company')),
+                TextInput::make('company_number')
+                    ->maxLength(255)
+                    ->placeholder(__('Company Number')),
+                TextInput::make('quantity')
+                    ->maxLength(255)
+                    ->placeholder(__('Quantity')),
                 TextInput::make('order_id')
                     ->required()
                     ->maxLength(255)

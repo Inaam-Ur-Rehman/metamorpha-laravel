@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 gap-16 px-4 mx-auto md:grid-cols-2 max-w-7xl" x-data="{ country: 'Belgium' }">
+<div class="grid grid-cols-1 gap-16 px-4 mx-auto md:grid-cols-2 max-w-7xl" x-data="{ country: '', quantity: 1 }">
     <div>
         <h1 class="text-center text-theme-yellow !font-vpc900 text-xl md:text-4xl uppercase">Algemene informatie</h1>
 
@@ -11,7 +11,6 @@
                     </label>
                     <input type="text" name="voornaam" id="voornaam" wire:model='first_name'
                         class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" />
-
                     @error('first_name')
                         <span class="text-xs text-red-600">{{ $message }}</span>
                     @enderror
@@ -41,13 +40,14 @@
             </div>
             <div>
                 {{-- select menu country (land) to choose from belgium, netherlands, --}}
-                <label for="land" class="block mb-2">
+                <label for="country" class="block mb-2">
                     Land
                     <span class="text-red-600">*</span>
                 </label>
                 <select name="country" id="country" wire:model='country' wire:change='update'
                     class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" x-model="country">
-                    <option value="Belgium" selected>België</option>
+                    <option value="" selected> Selecteer een land</option>
+                    <option value="Belgium">België</option>
                     <option value="Netherland">Nederland</option>
                 </select>
 
@@ -105,17 +105,41 @@
                     @enderror
                 </div>
             </div>
-            {{-- take fiull name  --}}
             <div>
-                <label for="company_name" class="block mb-2">
-                    Naam onderneming
+                <label for="quantity" class="block mb-2">
+                    Hoeveelheid
                     <span class="text-red-600">*</span>
                 </label>
-                <input type="text" name="company_name" id="company_name" wire:model='company'
+
+                <input type="number" name="quantity" id="quantity" wire:model.live='quantity' value="1"
+                    wire:change='quantityUpdate'
                     class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" />
-                @error('company')
+                @error('quantity')
                     <span class="text-xs text-red-600">{{ $message }}</span>
                 @enderror
+            </div>
+            {{-- take fiull name  --}}
+            <div class="grid grid-cols-2 gap-6 ">
+                <div>
+                    <label for="company_name" class="block mb-2">
+                        Naam onderneming
+                    </label>
+                    <input type="text" name="company_name" id="company_name" wire:model='company'
+                        class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" />
+                    @error('company')
+                        <span class="text-xs text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <label for="company_number" class="block mb-2">
+                        Ondernemingsnummer
+                    </label>
+                    <input type="text" name="company_number" id="company_number" wire:model='company_number'
+                        class="w-full p-2 text-black bg-white border-2 rounded-md border-theme-blue" />
+                    @error('company_number')
+                        <span class="text-xs text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
             {{-- checkbox for terms --}}
             <div>
@@ -134,15 +158,20 @@
     </div>
     <div class="w-full md:max-w-md px-8 bg-white rounded-md h-max justify-self-end !font-v400">
         <h2 class="text-2xl md:text-4xl !font-vpc900 uppercase text-theme-blue text-center my-4">Winkelmandje</h2>
+
         <div class="flex items-center justify-between">
             <h3>Inspiratiekaarten</h3>
             <p>€ {{ $block['price'] }}.00</p>
+        </div>
+        <div class="flex items-center justify-between mt-2">
+            <h3>Hoeveelheid</h3>
+            <p>{{ $quantity }}</p>
         </div>
         <hr class="my-6" />
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between">
                 <h3 class="font-bold">Subtotaal</h3>
-                <p class="font-bold">€ {{ $block['price'] }}.00</p>
+                <p class="font-bold">€ {{ $total_cost }}.00</p>
             </div>
             <div class="flex items-center justify-between">
                 <h3>Verzendkosten</h3>
@@ -153,16 +182,13 @@
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between text-xl">
                 <h3 class="font-bold">Totaal</h3>
-                <p x-show="country=='Belgium'" class="font-bold">€
-                    {{ $block['price'] }}.00
+                <p>
+                    € {{ $total_cost }}.00
                 </p>
-                <p x-show="country=='Netherland'" class="font-bold">€
-                    {{ $block['price'] + 4 }}.00
-                </p>
+
             </div>
             <div class="flex items-center justify-between">
                 <h3>Bedrag incl. 6% BTW en verzendkosten</h3>
-                {{-- <p>6 %</p> --}}
             </div>
         </div>
         <button type="submit" wire:click.prevent='submit'

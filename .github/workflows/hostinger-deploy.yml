@@ -47,3 +47,6 @@ jobs:
             git pull origin main
             php ~/composer.phar install
             php artisan migrate --force
+      - name: Copy build files to target server
+        run: | rsync -r -e 
+      

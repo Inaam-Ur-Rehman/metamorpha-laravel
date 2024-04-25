@@ -47,6 +47,8 @@ class DownloadDoc extends Controller
                     'transaction_id' => $payment->id,
                     'payment_method' => $payment->method,
                     'payment_status' => $payment->status,
+                    'quantity' => $payment->metadata->quantity,
+                    'company_number' => $payment->metadata->company_number,
                 ]);
                 Mail::to(['bart@metamorpha.be', $payment->metadata->email])->send(
                     new OrderPlaced($ord)

@@ -20,6 +20,8 @@ class CheckoutForm extends Component
     public $postal_code;
     public $company;
     public $terms;
+    public $quantity = 1;
+    public $company_number;
 
     public $total_cost;
 
@@ -32,8 +34,8 @@ class CheckoutForm extends Component
         'street' => 'required|min:3',
         'house_number' => 'required|min:1',
         'postal_code' => 'required|min:3',
-        'company' => 'required|min:3',
         'terms' => 'required',
+        'quantity' => 'required|numeric|min:1|max:10',
     ];
 
     public $messages = [
@@ -62,6 +64,16 @@ class CheckoutForm extends Component
         }
     }
 
+    public function quantityUpdate(){
+        if ($this->country == 'Belgium') {
+            $this->quantity = $this->quantity;
+            $this->total_cost = $this->total_cost * $this->quantity;
+        } else {
+            $this->quantity = $this->quantity;
+            $this->total_cost = ($this->total_cost + 4) * $this->quantity;
+        }
+    }
+
     public function submit()
     {
         $this->validate();
@@ -81,7 +93,7 @@ class CheckoutForm extends Component
             "amount" => [
                 "currency" => "EUR",
                 // convert cost to string
-                "value" => $this->country == 'Belgium' ? number_format($this->total_cost, 2, '.', '') : number_format($this->total_cost + 4, 2, '.', '')
+                "value" => $this->country == 'Belgium' ? number_format($this->total_cost, 2, '.', '') : number_format($this->total_cost + 4, 2, '.', ''),
                 // You must send the correct number of decimals, thus we enforce the use of strings
             ],
             "description" => "Inspiratiekaarten voor werkende mensen",
@@ -98,6 +110,8 @@ class CheckoutForm extends Component
                 "house_number" => $this->house_number,
                 "postal_code" => $this->postal_code,
                 "company" => $this->company,
+                "quantity" => $this->quantity,
+                "company_number" => $this->company_number
             ],
         ]);
         // session put with also the payment id and set expiration time for this paymentid
@@ -115,9 +129,15 @@ class CheckoutForm extends Component
             $blocks[] = $block['data'];
         }
         $block = $blocks[0];
-        $this->total_cost = $block['price'];
+        if($this->country == 'Belgium'){
+            $this->total_cost = $block['price']*$this->quantity;
+        } else if ($this->country == 'Netherland') {
+            $this->total_cost = ($block['price'] + 4)*$this->quantity;
+        }
+        else{
+            $this->total_cost = $block['price']*$this->quantity;
+        }
         return view('livewire.checkout-form', [
-            'price' => $this->total_cost,
             'block' => $block,
         ]);
     }
