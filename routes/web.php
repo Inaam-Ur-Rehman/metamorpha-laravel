@@ -42,7 +42,7 @@ Route::get('/wettelijke-informatie
 Route::get('/kmo-portefeuille', [PrivacyController::class, 'portefeuille'])->name('kmo-portefeuille');
 
 // Event routes
-Route::get('/evenementen', [\App\Http\Controllers\EventsController::class, 'index'])->name('events.retreat');
+// Route::get('/evenementen', [\App\Http\Controllers\EventsController::class, 'index'])->name('events.retreat');
 Route::get('/evenementen/agenda', [\App\Http\Controllers\EventsController::class, 'agenda'])->name('events.agenda');
 Route::get('/evenementen/{slug}', [\App\Http\Controllers\EventsController::class, 'show'])->name('events.show');
 Route::get('/evenementen/register/{slug}', [\App\Http\Controllers\EventsController::class, 'register'])->name('events.register');
