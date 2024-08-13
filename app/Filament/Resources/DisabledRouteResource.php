@@ -40,7 +40,13 @@ class DisabledRouteResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('route')
+                    ->label('Route')
+                    ->searchable()
+                    ->sortable(),
+                BooleanColumn::make('disabled')
+                    ->label('Disabled')
+                    ->sortable(),
             ])
             ->filters([
                 //
