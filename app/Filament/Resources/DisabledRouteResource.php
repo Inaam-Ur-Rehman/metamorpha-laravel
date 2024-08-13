@@ -46,18 +46,12 @@ class DisabledRouteResource extends Resource
                     ->label('Route')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('disabled')
+                TIconColumn::make('disabled')
                     ->label('Disabled')
-                    ->color(fn (string $state): string => match ($state) {
-                        '1' => 'red',
-                        '0' => 'green',
-                        default => 'gray',
-                    })
-                    ->format(fn (string $state): string => match ($state) {
-                        '1' => 'Disabled',
-                        '0' => 'Enabled',
-                        default => 'Unknown',
-                    }),
+                    ->color(fn($record) => $record->disabled ? 'red' : 'green')
+                    ->searchable()
+                    ->sortable(),
+
             ])
             ->filters([
                 //
