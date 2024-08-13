@@ -53,6 +53,11 @@ class DisabledRouteResource extends Resource
                         '0' => 'green',
                         default => 'gray',
                     })
+                    ->format(fn (string $state): string => match ($state) {
+                        '1' => 'Disabled',
+                        '0' => 'Enabled',
+                        default => 'Unknown',
+                    }),
             ])
             ->filters([
                 //
