@@ -22,18 +22,18 @@ use Mollie\Laravel\Facades\Mollie;
 |
 */
 
-// // disable / enable routes from the admin panel
-// // get list of routes that are disabled from the admin panel
-// $disabledRoutes = \App\Models\DisabledRoute::all()->where('disabled', true);
-// $disabledRoutes = $disabledRoutes->map(function ($route) {
-//     // remove the first slash from the route if it exists
-//     return ltrim($route->route, '/');
-// })->toArray();
+// disable / enable routes from the admin panel
+// get list of routes that are disabled from the admin panel
+$disabledRoutes = \App\Models\DisabledRoute::all()->where('disabled', true);
+$disabledRoutes = $disabledRoutes->map(function ($route) {
+    // remove the first slash from the route if it exists
+    return ltrim($route->route, '/');
+})->toArray();
 
-// // check if the current route is disabled
-// if (in_array(request()->path(), $disabledRoutes)) {
-//    return abort(404);
-// }
+// check if the current route is disabled
+if (in_array(request()->path(), $disabledRoutes)) {
+   return abort(404);
+}
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
