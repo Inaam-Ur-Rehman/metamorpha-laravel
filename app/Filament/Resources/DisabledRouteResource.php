@@ -9,7 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BoolenColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Forms\Components\Checkbox;
 use Filament\Resources\Resource;
 use Filament\Tables;
