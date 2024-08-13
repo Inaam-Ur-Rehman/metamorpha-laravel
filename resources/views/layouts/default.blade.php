@@ -39,7 +39,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @livewireStyles
 </head>
-
 <body class="antialiased">
     <a href="/contact"
         class="w-12 h-12 fixed bottom-5 right-5 z-[99999]  rounded-full bg-theme-blue flex items-center justify-center cursor-pointer transition-all hover:scale-105">

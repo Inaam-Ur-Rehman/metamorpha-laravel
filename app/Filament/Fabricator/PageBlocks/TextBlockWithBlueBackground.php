@@ -5,6 +5,7 @@ namespace App\Filament\Fabricator\PageBlocks;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Z3d0X\FilamentFabricator\PageBlocks\PageBlock;
 
 class TextBlockWithBlueBackground extends PageBlock
@@ -20,6 +21,16 @@ class TextBlockWithBlueBackground extends PageBlock
                 RichEditor::make('description')
                     ->label('Description')
                     ->required(),
+                    FileUpload::make('logo1')
+                    ->label('First Logo')
+                    ->required()
+                    ->image()
+                    ->maxSize(1024),
+                    FileUpload::make('logo2')
+                    ->label('Second Logo')
+                    ->required()
+                    ->image()
+                    ->maxSize(1024),
             ]);
     }
 

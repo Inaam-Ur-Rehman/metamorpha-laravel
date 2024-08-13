@@ -56,6 +56,7 @@
                     verandering</a>
                 <a href="/aanbod/levens" class="block hover:underline underline-offset-4 decoration-2">Levens in
                     transitie</a>
+                <a href="/loopbaancoaching" class="block hover:underline underline-offset-4 decoration-2">Loopbaancoaching</a>
                 <a href="/aanbod/inspiratiekaarten"
                     class="block hover:underline underline-offset-4 decoration-2">Inspiratiekaarten</a>
                 <a href="/aanbod/boek" class="block hover:underline underline-offset-4 decoration-2">Boek</a>

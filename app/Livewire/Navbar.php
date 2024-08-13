@@ -23,6 +23,7 @@ class Navbar extends Component
                 'submenu' => [
                     ['name' => 'Organisaties in verandering', 'url' => '/aanbod/verandering'],
                     ['name' => 'Levens in transitie', 'url' => '/aanbod/levens'],
+                    ['name' => 'Loopbaancoaching', 'url' => '/loopbaancoaching'],
                     ['name' => 'Inspiratiekaarten', 'url' => '/aanbod/inspiratiekaarten'],
                     ['name' => 'Boek', 'url' => '/aanbod/boek'],
                     // ['name' => 'Verdieping', 'url' => '/aanbod/verdieping'],

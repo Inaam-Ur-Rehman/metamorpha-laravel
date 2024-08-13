@@ -22,6 +22,20 @@ use Mollie\Laravel\Facades\Mollie;
 |
 */
 
+// disable / enable routes from the admin panel
+// get list of routes that are disabled from the admin panel
+$disabledRoutes = \App\Models\DisabledRoute::all()->where('disabled', true);
+$disabledRoutes = $disabledRoutes->map(function ($route) {
+    // remove the first slash from the route if it exists
+    return ltrim($route->route, '/');
+})->toArray();
+
+// check if the current route is disabled
+if (in_array(request()->path(), $disabledRoutes)) {
+   return abort(404);
+}
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/aanbod/levens', [LevensController::class, 'index'])->name('levens');
 Route::get('/aanbod/inspiratiekaarten', [InspiratiekaartenController::class, 'index'])->name('inspiratiekaarten');
@@ -46,3 +60,6 @@ Route::get('/kmo-portefeuille', [PrivacyController::class, 'portefeuille'])->nam
 Route::get('/evenementen/agenda', [\App\Http\Controllers\EventsController::class, 'agenda'])->name('events.agenda');
 Route::get('/evenementen/{slug}', [\App\Http\Controllers\EventsController::class, 'show'])->name('events.show');
 Route::get('/evenementen/register/{slug}', [\App\Http\Controllers\EventsController::class, 'register'])->name('events.register');
+
+
+Route::get('/loopbaancoaching',[\App\Http\Controllers\Loopbaancoaching::class, 'index'])->name('loopbaancoaching.index');
