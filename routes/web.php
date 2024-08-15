@@ -22,37 +22,37 @@ use Mollie\Laravel\Facades\Mollie;
 |
 */
 
-// // disable / enable routes from the admin panel
-// // get list of routes that are disabled from the admin panel
-// $disabledRoutes = \App\Models\Header::where('disabled', true)->get()->pluck('slug')->toArray();
+// disable / enable routes from the admin panel
+// get list of routes that are disabled from the admin panel
+$disabledRoutes = \App\Models\Header::where('disabled', true)->get()->pluck('slug')->toArray();
 
-// // check if the routes children has disabled routes
-// $childDisabledRoutes = \App\Models\Header::where('has_child', true)->get()->map(function($item) {
-//     return $item->children;
-// })->map(function($item) {
-//     return collect($item)->map(function($child) {
-//         return $child['child'];
-//     });
-// })->map(function($item) {
-//     return $item->map(function($child) {
-//         return collect($child)->map(function($child) {
-//             return $child['disabled'] == true ? $child['slug'] : null;
-//         });
-//     });
-// })->flatten()->filter()->toArray();
+// check if the routes children has disabled routes
+$childDisabledRoutes = \App\Models\Header::where('has_child', true)->get()->map(function($item) {
+    return $item->children;
+})->map(function($item) {
+    return collect($item)->map(function($child) {
+        return $child['child'];
+    });
+})->map(function($item) {
+    return $item->map(function($child) {
+        return collect($child)->map(function($child) {
+            return $child['disabled'] == true ? $child['slug'] : null;
+        });
+    });
+})->flatten()->filter()->toArray();
 
-// $disabledRoutes = array_merge($disabledRoutes, $childDisabledRoutes);
+$disabledRoutes = array_merge($disabledRoutes, $childDisabledRoutes);
 
-// // remove trailing slashes
-// $disabledRoutes = array_map(function($item) {
-//     return ltrim($item, '/');
-// }, $disabledRoutes);
+// remove trailing slashes
+$disabledRoutes = array_map(function($item) {
+    return ltrim($item, '/');
+}, $disabledRoutes);
 
-// // dd($disabledRoutes);
+// dd($disabledRoutes);
 
-// if(in_array(request()->path(), $disabledRoutes)) {
-//     return abort(404);
-// }
+if(in_array(request()->path(), $disabledRoutes)) {
+    return abort(404);
+}
 
 
 
