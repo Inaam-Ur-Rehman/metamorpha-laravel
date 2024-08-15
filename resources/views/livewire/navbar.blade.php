@@ -23,10 +23,13 @@
                         <div x-show="subOpen" @click.outside="subOpen = false"
                             class="left-0 z-40 flex flex-col w-full gap-2 px-4 py-2 lg:shadow-lg lg:absolute lg:bg-gray-50 top-8 min-w-max">
                             @foreach ($link['submenu'] as $sublink)
-                                <a href="{{ $sublink['url'] }}"
-                                    class="hover:underline underline-offset-4 decoration-2 {{ request()->is($link['url']) ? 'underline' : '' }}">
-                                    {{ $sublink['name'] }}
-                                </a>
+                                {{-- if not null --}}
+                                @if ($sublink['name'] !== null)
+                                    <a href="{{ $sublink['url'] }}"
+                                        class="hover:underline underline-offset-4 decoration-2">
+                                        {{ $sublink['name'] }}
+                                    </a>
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -59,10 +62,13 @@
                         <div x-show="subOpen" @click.outside="subOpen = false"
                             class="left-0 z-40 flex flex-col w-full gap-2 px-4 py-2 lg:shadow-lg lg:absolute lg:bg-gray-50 top-8 min-w-max">
                             @foreach ($link['submenu'] as $sublink)
-                                <a href="{{ $sublink['url'] }}"
-                                    class="hover:underline underline-offset-4 decoration-2">
-                                    {{ $sublink['name'] }}
-                                </a>
+                                {{-- if not null --}}
+                                @if ($sublink['name'] !== null)
+                                    <a href="{{ $sublink['url'] }}"
+                                        class="hover:underline underline-offset-4 decoration-2">
+                                        {{ $sublink['name'] }}
+                                    </a>
+                                @endif
                             @endforeach
                         </div>
                     </div>

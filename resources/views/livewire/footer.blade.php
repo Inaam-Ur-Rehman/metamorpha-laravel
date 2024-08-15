@@ -40,28 +40,21 @@
         <div>
             <h2 class="font-bold !font-vp400 text-theme-blue">Informatie</h2>
             <div class="flex flex-col gap-2 mt-4">
-                <a href="/" class="block hover:underline underline-offset-4 decoration-2">Home</a>
-                <a href="https://calendly.com/bart-vanderherten"
-                    class="block hover:underline underline-offset-4 decoration-2">Agenda</a>
-                <a href="/getuigenissen" class="block hover:underline underline-offset-4 decoration-2">Getuigenissen</a>
-                <a href="/inspiratie" class="block hover:underline underline-offset-4 decoration-2">Inspiratie</a>
-                <a href="/team" class="block hover:underline underline-offset-4 decoration-2">Team</a>
-                <a href="/evenementen" class="block hover:underline underline-offset-4 decoration-2">Evenementen</a>
+                @foreach ($menu as $link)
+                   <a href="{{$link['slug']}}" class="block hover:underline underline-offset-4 decoration-2">
+                        {{ $link['name'] }}
+                   </a>
+                @endforeach
             </div>
         </div>
         <div>
             <h2 class="font-bold !font-vp400 text-theme-blue">Aanbod</h2>
             <div class="flex flex-col gap-2 mt-4">
-                <a href="/aanbod/verandering" class="block hover:underline underline-offset-4 decoration-2">Bedrijven in
-                    verandering</a>
-                <a href="/aanbod/levens" class="block hover:underline underline-offset-4 decoration-2">Levens in
-                    transitie</a>
-                <a href="/loopbaancoaching" class="block hover:underline underline-offset-4 decoration-2">Loopbaancoaching</a>
-                <a href="/aanbod/inspiratiekaarten"
-                    class="block hover:underline underline-offset-4 decoration-2">Inspiratiekaarten</a>
-                <a href="/aanbod/boek" class="block hover:underline underline-offset-4 decoration-2">Boek</a>
-                {{-- <a href="/aanbod/verdieping"
-                    class="block hover:underline underline-offset-4 decoration-2">Verdieping</a> --}}
+                @foreach ($subMenu as $link)
+                    <a href="{{$link['slug']}}" class="block hover:underline underline-offset-4 decoration-2">
+                        {{ $link['name'] }}
+                    </a>
+                @endforeach
             </div>
         </div>
         <div>
