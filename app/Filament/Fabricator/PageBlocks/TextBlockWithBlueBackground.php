@@ -23,12 +23,10 @@ class TextBlockWithBlueBackground extends PageBlock
                     ->required(),
                     FileUpload::make('logo1')
                     ->label('First Logo')
-                    ->required()
                     ->image()
                     ->maxSize(1024),
                     FileUpload::make('logo2')
                     ->label('Second Logo')
-                    ->required()
                     ->image()
                     ->maxSize(1024),
             ]);
