@@ -3,7 +3,7 @@
         class="flex flex-col justify-between px-4 py-6 mx-auto bg-white max-w-8xl lg:flex-row lg:items-center md:px-8 gap-y-8">
         <div class="flex items-center justify-between w-full">
             <a href="/">
-                <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="w-44 md:w-64 lg:w-72 object-fill" />
+                <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="w-64" />
             </a>
             <x-heroicon-o-bars-3 class="w-8 text-black cursor-pointer lg:hidden" @click="open = !open" />
         </div>
