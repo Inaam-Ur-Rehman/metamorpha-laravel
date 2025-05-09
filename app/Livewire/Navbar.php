@@ -19,6 +19,7 @@ class Navbar extends Component
 
         $menuItems = Header::all()->where('disabled', false);
 
+
         // $menu = [
         //     ['name' => 'Home', 'url' => '/'],
         //     [
@@ -38,7 +39,7 @@ class Navbar extends Component
         //     ['name' => 'Team', 'url' => '/team'],
         //     ['name' => 'Evenementen', 'url' => '/evenementen'],
         // ];
-    
+
         // convert it into upper format array
 
         // dd($menuItems[1]->children[0]['child']);
@@ -65,10 +66,10 @@ class Navbar extends Component
                 }, $menuItem->children[0]['child']) : null
             ];
         }
-        
 
 
-        
+
+
 
         return view(
             'livewire.navbar',

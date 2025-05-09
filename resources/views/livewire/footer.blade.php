@@ -1,8 +1,8 @@
 <footer class="border-t-2 border-theme-blue">
     <div
         class="py-12 !font-v400 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 justify-items-start mx-auto max-w-8xl px-4">
-        <div>
-            <img src="{{ asset('images/logo.svg') }}" alt="Logo" />
+        <div class="flex flex-col lg:items-center">
+            <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="w-64 lg:w-72 object-fill mx-auto block" />
             <p class="flex flex-col mt-4">
                 <span>Pastoor Dergentlaan 216</span>
                 <span>3200 Aarschot</span>

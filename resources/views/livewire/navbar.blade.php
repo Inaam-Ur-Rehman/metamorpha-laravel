@@ -3,7 +3,7 @@
         class="flex flex-col justify-between px-4 py-6 mx-auto bg-white max-w-8xl lg:flex-row lg:items-center md:px-8 gap-y-8">
         <div class="flex items-center justify-between w-full">
             <a href="/">
-                <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="w-52" />
+                <img src="{{ asset('images/lls.png') }}" alt="Logo" class="w-44 md:w-64 lg:w-72 object-fill" />
             </a>
             <x-heroicon-o-bars-3 class="w-8 text-black cursor-pointer lg:hidden" @click="open = !open" />
         </div>
@@ -39,7 +39,7 @@
                             {{ $link['name'] }}
                         </a>
                     @else
-                        <a href="{{ $link['url'] }}" class="hover:underline underline-offset-4 decoration-2">
+                        <a href="{{ $link['url'] }}" class="hover:underline underline-offset-4 decoration-2 whitespace-nowrap">
                             {{ $link['name'] }}
                         </a>
                     @endif
@@ -65,7 +65,7 @@
                                 {{-- if not null --}}
                                 @if ($sublink['name'] !== null)
                                     <a href="{{ $sublink['url'] }}"
-                                        class="hover:underline underline-offset-4 decoration-2">
+                                        class="hover:underline underline-offset-4 decoration-2 whitespace-nowrap">
                                         {{ $sublink['name'] }}
                                     </a>
                                 @endif

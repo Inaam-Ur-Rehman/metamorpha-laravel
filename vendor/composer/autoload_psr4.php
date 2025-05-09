@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'voku\\' => array($vendorDir . '/voku/portable-ascii/src/voku'),
-    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
+    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-common/src'),
     'Z3d0X\\FilamentFabricator\\Database\\Factories\\' => array($vendorDir . '/z3d0x/filament-fabricator/database/factories'),
     'Z3d0X\\FilamentFabricator\\' => array($vendorDir . '/z3d0x/filament-fabricator/src'),
     'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
