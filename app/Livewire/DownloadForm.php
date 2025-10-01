@@ -11,6 +11,7 @@ use Livewire\Component;
 class DownloadForm extends Component
 {
     public $slug;
+    public $title;
     public $first_name;
     public $last_name;
     public $email;

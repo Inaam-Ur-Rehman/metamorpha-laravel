@@ -1,6 +1,6 @@
 <div class="px-4 my-16">
     <h1 class="text-3xl md:text-4xl !font-vp700 text-center my-12">
-        Download “Selfleadership in tijden van turbulentie”
+        Download “{{$title}}”
     </h1>
     <form class="max-w-3xl px-4 mx-auto !font-vp600 !font-bold flex flex-col gap-6 text-xl" wire:submit.prevent='save'>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
