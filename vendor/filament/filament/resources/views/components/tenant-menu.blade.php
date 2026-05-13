@@ -26,10 +26,11 @@
     $items = \Illuminate\Support\Arr::except($items, ['billing', 'profile', 'register']);
 @endphp
 
-{{ \Filament\Support\Facades\FilamentView::renderHook('panels::tenant-menu.before') }}
+{{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::TENANT_MENU_BEFORE) }}
 
 <x-filament::dropdown
     placement="bottom-start"
+    size
     teleport
     :attributes="
         \Filament\Support\prepare_inherited_attributes($attributes)
@@ -78,7 +79,7 @@
 
             <x-filament::icon
                 icon="heroicon-m-chevron-down"
-                icon-alias="panels::tenant-menu.toggle-button"
+                alias="panels::tenant-menu.toggle-button"
                 :x-show="filament()->isSidebarCollapsibleOnDesktop() ? '$store.sidebar.isOpen' : null"
                 class="ms-auto h-5 w-5 shrink-0 text-gray-400 transition duration-75 group-hover:text-gray-500 group-focus-visible:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400 dark:group-focus-visible:text-gray-400"
             />
@@ -116,12 +117,18 @@
     @if (count($items))
         <x-filament::dropdown.list>
             @foreach ($items as $item)
+                @php
+                    $itemPostAction = $item->getPostAction();
+                @endphp
+
                 <x-filament::dropdown.list.item
+                    :action="$itemPostAction"
                     :color="$item->getColor()"
                     :href="$item->getUrl()"
-                    :target="$item->shouldOpenUrlInNewTab() ? '_blank' : null"
                     :icon="$item->getIcon()"
-                    tag="a"
+                    :method="filled($itemPostAction) ? 'post' : null"
+                    :tag="filled($itemPostAction) ? 'form' : 'a'"
+                    :target="$item->shouldOpenUrlInNewTab() ? '_blank' : null"
                 >
                     {{ $item->getLabel() }}
                 </x-filament::dropdown.list.item>
@@ -158,4 +165,4 @@
     @endif
 </x-filament::dropdown>
 
-{{ \Filament\Support\Facades\FilamentView::renderHook('panels::tenant-menu.after') }}
+{{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::TENANT_MENU_AFTER) }}

@@ -105,6 +105,20 @@ document.addEventListener('alpine:init', () => {
             this.setIframeDimensions(newMaxWidth, newMaxHeight);
         },
 
+        onOpenPreviewTab($event) {
+            dispatch(document, 'peek:tab-opening', { modal: this });
+
+            this.previewTabUrl = $event.detail.url;
+
+            if (this.previewTab && this.previewTab.closed === false) {
+                this.previewTab.location = this.previewTabUrl;
+            } else {
+                this.previewTab = window.open(this.previewTabUrl);
+            }
+
+            setTimeout(() => dispatch(document, 'peek:tab-opened', { modal: this }), 0);
+        },
+
         onOpenPreviewModal($event) {
             dispatch(document, 'peek:modal-opening', { modal: this });
 
@@ -167,11 +181,9 @@ document.addEventListener('alpine:init', () => {
 
                 if (iframe && iframe.contentWindow) {
                     this._iframeScrollPosition = iframe.contentWindow.scrollY;
-
-                    setTimeout(() => {
-                        const iframe = this.$refs.previewModalBody.querySelector('iframe');
+                    iframe.onload = () => {
                         iframe?.contentWindow?.scrollTo(0, this._iframeScrollPosition || 0);
-                    }, 60);
+                    }
                 }
             } catch (e) {
                 // pass

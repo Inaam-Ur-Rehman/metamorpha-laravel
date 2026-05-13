@@ -7,6 +7,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Facades\Filament;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\CanUseDatabaseTransactions;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Support\Exceptions\Halt;
@@ -14,14 +15,17 @@ use Filament\Support\Facades\FilamentView;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
-use function Filament\Support\is_app_url;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
+use Illuminate\Support\Js;
+use Livewire\Attributes\Locked;
+use Throwable;
 
 /**
  * @property Form $form
  */
 class CreateRecord extends Page
 {
+    use CanUseDatabaseTransactions;
     use HasUnsavedDataChangesAlert;
     use InteractsWithFormActions;
 
@@ -40,6 +44,9 @@ class CreateRecord extends Page
     public ?string $previousUrl = null;
 
     protected static bool $canCreateAnother = true;
+
+    #[Locked]
+    public bool $isCreating = false;
 
     public function getBreadcrumb(): string
     {
@@ -71,9 +78,17 @@ class CreateRecord extends Page
 
     public function create(bool $another = false): void
     {
+        if ($this->isCreating) {
+            return;
+        }
+
+        $this->isCreating = true;
+
         $this->authorizeAccess();
 
         try {
+            $this->beginDatabaseTransaction();
+
             $this->callHook('beforeValidate');
 
             $data = $this->form->getState();
@@ -90,8 +105,22 @@ class CreateRecord extends Page
 
             $this->callHook('afterCreate');
         } catch (Halt $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $this->rollBackDatabaseTransaction() :
+                $this->commitDatabaseTransaction();
+
+            $this->isCreating = false;
+
             return;
+        } catch (Throwable $exception) {
+            $this->rollBackDatabaseTransaction();
+
+            $this->isCreating = false;
+
+            throw $exception;
         }
+
+        $this->commitDatabaseTransaction();
 
         $this->rememberData();
 
@@ -104,12 +133,14 @@ class CreateRecord extends Page
 
             $this->fillForm();
 
+            $this->isCreating = false;
+
             return;
         }
 
         $redirectUrl = $this->getRedirectUrl();
 
-        $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode() && is_app_url($redirectUrl));
+        $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
     }
 
     protected function getCreatedNotification(): ?Notification
@@ -166,7 +197,7 @@ class CreateRecord extends Page
     {
         $relationship = static::getResource()::getTenantRelationship($tenant);
 
-        if ($relationship instanceof HasManyThrough) {
+        if ($relationship instanceof (class_exists(HasOneOrManyThrough::class) ? HasOneOrManyThrough::class : HasManyThrough::class)) {
             $record->save();
 
             return $record;
@@ -222,7 +253,7 @@ class CreateRecord extends Page
     {
         return Action::make('cancel')
             ->label(__('filament-panels::resources/pages/create-record.form.actions.cancel.label'))
-            ->url($this->previousUrl ?? static::getResource()::getUrl())
+            ->alpineClickHandler('document.referrer ? window.history.back() : (window.location.href = ' . Js::from($this->previousUrl ?? static::getResource()::getUrl()) . ')')
             ->color('gray');
     }
 

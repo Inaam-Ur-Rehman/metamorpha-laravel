@@ -2,6 +2,7 @@
 
 namespace Livewire\Mechanisms\FrontendAssets;
 
+use Illuminate\Support\Facades\Vite;
 use Livewire\Drawer\Utils;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
@@ -20,12 +21,25 @@ class FrontendAssets extends Mechanism
     public function boot()
     {
         app($this::class)->setScriptRoute(function ($handle) {
-            return Route::get('/livewire/livewire.js', $handle);
+            return config('app.debug')
+                ? Route::get('/livewire/livewire.js', $handle)
+                : Route::get('/livewire/livewire.min.js', $handle);
         });
+
+        Route::get('/livewire/livewire.min.js.map', [static::class, 'maps']);
 
         Blade::directive('livewireScripts', [static::class, 'livewireScripts']);
         Blade::directive('livewireScriptConfig', [static::class, 'livewireScriptConfig']);
         Blade::directive('livewireStyles', [static::class, 'livewireStyles']);
+
+        app('livewire')->provide(function() {
+            $this->publishes(
+                [
+                    __DIR__.'/../../../dist' => public_path('vendor/livewire'),
+                ],
+                'livewire:assets',
+            );
+        });
 
         on('flush-state', function () {
             $instance = app(static::class);
@@ -64,19 +78,27 @@ class FrontendAssets extends Mechanism
 
     public function returnJavaScriptAsFile()
     {
-        return Utils::pretendResponseIsFile(__DIR__.'/../../../dist/livewire.js');
+        return Utils::pretendResponseIsFile(
+            config('app.debug')
+                ? __DIR__.'/../../../dist/livewire.js'
+                : __DIR__.'/../../../dist/livewire.min.js'
+        );
     }
 
     public function maps()
     {
-        return Utils::pretendResponseIsFile(__DIR__.'/../../../dist/livewire.js.map');
+        return Utils::pretendResponseIsFile(__DIR__.'/../../../dist/livewire.min.js.map');
     }
 
+    /**
+     * @return string
+     */
     public static function styles($options = [])
     {
         app(static::class)->hasRenderedStyles = true;
 
-        $nonce = isset($options['nonce']) ? "nonce=\"{$options['nonce']}\" data-livewire-style" : '';
+        $nonce = static::nonce($options);
+        $nonce = $nonce ? "{$nonce} data-livewire-style" : '';
 
         $progressBarColor = config('livewire.navigate.progress_bar_color', '#2299dd');
 
@@ -108,12 +130,23 @@ class FrontendAssets extends Mechanism
             [x-cloak] {
                 display: none !important;
             }
+
+            [wire\:cloak] {
+                display: none !important;
+            }
+
+            dialog#livewire-error::backdrop {
+                background-color: rgba(0, 0, 0, .6);
+            }
         </style>
         HTML;
 
         return static::minify($html);
     }
 
+    /**
+     * @return string
+     */
     public static function scripts($options = [])
     {
         app(static::class)->hasRenderedScripts = true;
@@ -149,13 +182,18 @@ class FrontendAssets extends Mechanism
         $url = (string) str($url)->when(! str($url)->isUrl(), fn($url) => $url->start('/'));
 
         // Add the build manifest hash to it...
-        $manifest = json_decode(file_get_contents(__DIR__.'/../../../dist/manifest.json'), true);
-        $versionHash = $manifest['/livewire.js'];
+        $manifestPath = __DIR__.'/../../../dist/manifest.json';
+        $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : [];
+        $versionHash = $manifest['/livewire.js'] ?? 'dev';
         $url = "{$url}?id={$versionHash}";
 
         $token = app()->has('session.store') ? csrf_token() : '';
 
-        $nonce = isset($options['nonce']) ? "nonce=\"{$options['nonce']}\"" : '';
+        $assetWarning = null;
+
+        $nonce = static::nonce($options);
+
+        [$url, $assetWarning] = static::usePublishedAssetsIfAvailable($url, $manifest, $nonce);
 
         $progressBar = config('livewire.navigate.show_progress_bar', true) ? '' : 'data-no-progress-bar';
 
@@ -166,7 +204,7 @@ class FrontendAssets extends Mechanism
         );
 
         return <<<HTML
-        <script src="{$url}" {$nonce} {$progressBar} data-csrf="{$token}" data-update-uri="{$updateUri}" {$extraAttributes}></script>
+        {$assetWarning}<script src="{$url}" {$nonce} {$progressBar} data-csrf="{$token}" data-update-uri="{$updateUri}" {$extraAttributes}></script>
         HTML;
     }
 
@@ -174,7 +212,7 @@ class FrontendAssets extends Mechanism
     {
         app(static::class)->hasRenderedScripts = true;
 
-        $nonce = isset($options['nonce']) ? " nonce=\"{$options['nonce']}\"" : '';
+        $nonce = static::nonce($options);
 
         $progressBar = config('livewire.navigate.show_progress_bar', true) ? '' : 'data-no-progress-bar';
 
@@ -186,12 +224,54 @@ class FrontendAssets extends Mechanism
         ]);
 
         return <<<HTML
-        <script{$nonce} data-navigate-once="true">window.livewireScriptConfig = {$attributes};</script>
+        <script {$nonce} data-navigate-once="true">window.livewireScriptConfig = {$attributes};</script>
         HTML;
+    }
+
+    protected static function usePublishedAssetsIfAvailable($url, $manifest, $nonce)
+    {
+        $assetWarning = null;
+
+        // Check to see if static assets have been published...
+        if (! file_exists(public_path('vendor/livewire/manifest.json'))) {
+            return [$url, $assetWarning];
+        }
+
+        $publishedManifest = json_decode(file_get_contents(public_path('vendor/livewire/manifest.json')), true);
+        $versionedFileName = $publishedManifest['/livewire.js'];
+
+        $fileName = config('app.debug') ? '/livewire.js' : '/livewire.min.js';
+
+        $versionedFileName = "{$fileName}?id={$versionedFileName}";
+
+        $assertUrl = config('livewire.asset_url')
+            ?? (app('livewire')->isRunningServerless()
+                ? rtrim(config('app.asset_url'), '/')."/vendor/livewire$versionedFileName"
+                : url("vendor/livewire{$versionedFileName}")
+            );
+
+        $url = $assertUrl;
+
+        if ($manifest !== $publishedManifest) {
+            $assetWarning = <<<HTML
+            <script {$nonce}>
+                console.warn('Livewire: The published Livewire assets are out of date\\n See: https://livewire.laravel.com/docs/installation#publishing-livewires-frontend-assets')
+            </script>\n
+            HTML;
+        }
+
+        return [$url, $assetWarning];
     }
 
     protected static function minify($subject)
     {
         return preg_replace('~(\v|\t|\s{2,})~m', '', $subject);
+    }
+
+    protected static function nonce($options = [])
+    {
+        $nonce = $options['nonce'] ?? Vite::cspNonce();
+
+        return $nonce ? "nonce=\"{$nonce}\"" : '';
     }
 }

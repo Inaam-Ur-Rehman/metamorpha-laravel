@@ -233,6 +233,8 @@ Select::make('author_id')
     )
 ```
 
+If you would like to access the current search query in the `modifyQueryUsing` function, you can inject `$search`.
+
 ### Customizing the relationship option labels
 
 If you'd like to customize the label of each option, maybe to be more descriptive, or to concatenate a first and last name, you could use a virtual column in your database migration:
@@ -264,13 +266,27 @@ Select::make('author_id')
     ->searchable(['first_name', 'last_name'])
 ```
 
+### Saving pivot data to the relationship
+
+If you're using a `multiple()` relationship and your pivot table has additional columns, you can use the `pivotData()` method to specify the data that should be saved in them:
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('primaryTechnologies')
+    ->relationship(name: 'technologies', titleAttribute: 'name')
+    ->multiple()
+    ->pivotData([
+        'is_primary' => true,
+    ])
+```
+
 ### Creating a new option in a modal
 
 You may define a custom form that can be used to create a new record and attach it to the `BelongsTo` relationship:
 
 ```php
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Model;
 
 Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'name')
@@ -289,13 +305,29 @@ The form opens in a modal, where the user can fill it with data. Upon form submi
 
 <AutoScreenshot name="forms/fields/select/create-option-modal" alt="Select with create option modal" version="3.x" />
 
+#### Customizing new option creation
+
+You can customize the creation process of the new option defined in the form using the `createOptionUsing()` method, which should return the primary key of the newly created record:
+
+```php
+use Filament\Forms\Components\Select;
+
+Select::make('author_id')
+    ->relationship(name: 'author', titleAttribute: 'name')
+    ->createOptionForm([
+       // ...
+    ])
+    ->createOptionUsing(function (array $data): int {
+        return auth()->user()->team->members()->create($data)->getKey();
+    }),
+```
+
 ### Editing the selected option in a modal
 
 You may define a custom form that can be used to edit the selected record and save it back to the `BelongsTo` relationship:
 
 ```php
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Model;
 
 Select::make('author_id')
     ->relationship(name: 'author', titleAttribute: 'name')
@@ -367,7 +399,7 @@ MorphToSelect::make('commentable')
     ])
 ```
 
-> Many of the same options in the select field are available for `MorphToSelect`, including `searchable()`, `preload()`, `allowHtml()`, and `optionsLimit()`.
+> Many of the same options in the select field are available for `MorphToSelect`, including `searchable()`, `preload()`, `native()`, `allowHtml()`, and `optionsLimit()`.
 
 ## Allowing HTML in the option labels
 

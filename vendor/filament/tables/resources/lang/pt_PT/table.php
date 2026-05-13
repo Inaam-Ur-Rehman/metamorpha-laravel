@@ -10,6 +10,10 @@ return [
 
     'columns' => [
 
+        'actions' => [
+            'label' => 'Acção|Acções',
+        ],
+
         'text' => [
 
             'actions' => [
@@ -134,7 +138,7 @@ return [
 
         'heading' => 'Filtros',
 
-        'indicator' => 'Filtros ativos',
+        'indicator' => 'Filtros activos',
 
         'multi_select' => [
             'placeholder' => 'Todos',

@@ -1,6 +1,3 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Highlight code blocks with league/commonmark and Shiki
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/commonmark-shiki-highlighter.svg?style=flat-square)](https://packagist.org/packages/spatie/commonmark-shiki-highlighter)
@@ -33,16 +30,18 @@ You can install the package via composer:
 composer require spatie/commonmark-shiki-highlighter
 ```
 
-In your project, you should have the JavaScript package `shiki` installed. You can install it via npm
+In your project, you must have v1 of the JavaScript package [`shiki`](https://github.com/shikijs/shiki) installed, otherwise the `<pre>` element will not be present in the output. 
+
+You can install it via npm
 
 ```bash
-npm install shiki
+npm install shiki@^1.3.0
 ```
 
 or Yarn
 
 ```bash
-yarn add shiki
+yarn add shiki@^1.3.0
 ```
 
 ## Usage
@@ -59,12 +58,21 @@ function convertToHtml(string $markdown, string $theme): string
 {
     $environment = (new Environment())
         ->addExtension(new CommonMarkCoreExtension())
-        ->addExtension(new HighlightCodeExtension($theme));
+        ->addExtension(new HighlightCodeExtension(theme: $theme));
 
     $markdownConverter = new MarkdownConverter(environment: $environment);
 
     return $markdownConverter->convertToHtml($markdown);
 }
+```
+
+Alternatively, you can inject an already instantiated `Shiki` instance into the `HighlightCodeExtension`:
+
+```php
+use Spatie\ShikiPhp\Shiki;
+use Spatie\CommonMarkShikiHighlighter\HighlightCodeExtension;
+
+$environment->addExtension(new HighlightCodeExtension(shiki: new Shiki()));
 ```
 
 ## Using themes
@@ -104,7 +112,7 @@ Line numbers start at 1.
 \`\`\`php{1-3,5} - Highlight 1 through 3 and then 5 on its own  
 \`\`\`php{5,7,2-3} - The order of lines don't matter. However, specifying 3-2 will not work.
 
-\`\`\`php{}{4} - Focus just line 4
+\`\`\`php{}{4} - Focus just line 4  
 \`\`\`php{}{4-6} - Focus the range of lines from 4 to 6 (inclusive)  
 \`\`\`php{}{1,5} - Focus just lines 1 and 5 on their own  
 \`\`\`php{}{1-3,5} - Focus 1 through 3 and then 5 on its own  
@@ -139,6 +147,16 @@ When you mark lines as highlighted, added, deleted or focused, Shiki will apply 
     transition: all 250ms;
     filter: blur(0);
 }
+```
+
+## Throwing on exceptions
+
+By default, the Shiki highlighter will not throw when something goes wrong and just return the non-highlighted code. If you want to throw the exception anyway, instantiate the highlighter with `throw` as `true`:
+
+```php
+$environment = (new Environment())
+    ->addExtension(new CommonMarkCoreExtension())
+    ->addExtension(new HighlightCodeExtension(theme: $theme, throw: true));
 ```
 
 ## A word on performance

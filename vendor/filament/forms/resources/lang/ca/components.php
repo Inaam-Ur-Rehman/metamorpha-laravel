@@ -12,10 +12,60 @@ return [
 
             'add' => [
                 'label' => 'Afegir a :label',
+
+                'modal' => [
+
+                    'heading' => 'Afegeix a :label',
+
+                    'actions' => [
+
+                        'add' => [
+                            'label' => 'Afegeix',
+                        ],
+
+                    ],
+
+                ],
+
             ],
 
             'add_between' => [
                 'label' => 'Inserir entre blocs',
+
+                'modal' => [
+
+                    'heading' => 'Afegir a :label',
+
+                    'actions' => [
+
+                        'add' => [
+                            'label' => 'Afegir',
+                        ],
+
+                    ],
+
+                ],
+
+            ],
+
+            'edit' => [
+
+                'label' => 'Edita',
+
+                'modal' => [
+
+                    'heading' => 'Edita bloc',
+
+                    'actions' => [
+
+                        'save' => [
+                            'label' => 'Desa els canvis',
+                        ],
+
+                    ],
+
+                ],
+
             ],
 
             'delete' => [
@@ -81,11 +131,11 @@ return [
                 ],
 
                 'drag_crop' => [
-                    'label' => `Mode d'arrossegament "retallar"`,
+                    'label' => 'Mode d\'arrossegament "retallar"',
                 ],
 
                 'drag_move' => [
-                    'label' => `Mode d'arrossegament "moure"`,
+                    'label' => 'Mode d\'arrossegament "moure"',
                 ],
 
                 'flip_horizontal' => [

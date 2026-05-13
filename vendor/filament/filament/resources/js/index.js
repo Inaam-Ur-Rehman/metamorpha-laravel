@@ -8,6 +8,32 @@ document.addEventListener('alpine:init', () => {
 
         collapsedGroups: window.Alpine.$persist(null).as('collapsedGroups'),
 
+        scrollTop: 0,
+
+        init: function () {
+            document.addEventListener('livewire:navigate', () => {
+                const sidebarWrapper = document.querySelector(
+                    '.fi-main-sidebar .fi-sidebar-nav',
+                )
+
+                if (sidebarWrapper) {
+                    this.scrollTop = sidebarWrapper.scrollTop
+                }
+            })
+
+            document.addEventListener('livewire:navigated', () => {
+                requestAnimationFrame(() => {
+                    const sidebarWrapper = document.querySelector(
+                        '.fi-main-sidebar .fi-sidebar-nav',
+                    )
+
+                    if (sidebarWrapper && this.scrollTop) {
+                        sidebarWrapper.scrollTop = this.scrollTop
+                    }
+                })
+            })
+        },
+
         groupIsCollapsed: function (group) {
             return this.collapsedGroups.includes(group)
         },
@@ -37,7 +63,11 @@ document.addEventListener('alpine:init', () => {
         },
     })
 
-    const theme = localStorage.getItem('theme') ?? 'system'
+    const theme =
+        localStorage.getItem('theme') ??
+        getComputedStyle(document.documentElement).getPropertyValue(
+            '--default-theme-mode',
+        )
 
     window.Alpine.store(
         'theme',

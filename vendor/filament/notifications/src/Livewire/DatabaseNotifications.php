@@ -29,9 +29,7 @@ class DatabaseNotifications extends Component
     public static ?string $authGuard = null;
 
     #[On('databaseNotificationsSent')]
-    public function refresh(): void
-    {
-    }
+    public function refresh(): void {}
 
     #[On('notificationClosed')]
     public function removeNotification(string $id): void
@@ -74,7 +72,7 @@ class DatabaseNotifications extends Component
             return $this->getNotificationsQuery()->get();
         }
 
-        return $this->getNotificationsQuery()->simplePaginate(50);
+        return $this->getNotificationsQuery()->simplePaginate(50, pageName: 'database-notifications-page');
     }
 
     public function isPaginated(): bool
@@ -84,8 +82,14 @@ class DatabaseNotifications extends Component
 
     public function getNotificationsQuery(): Builder | Relation
     {
+        $user = $this->getUser();
+
+        if (! $user) {
+            abort(401);
+        }
+
         /** @phpstan-ignore-next-line */
-        return $this->getUser()->notifications()->where('data->format', 'filament');
+        return $user->notifications()->where('data->format', 'filament');
     }
 
     public function getUnreadNotificationsQuery(): Builder | Relation

@@ -7,6 +7,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Support\Concerns;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Exceptions\Halt;
 use Illuminate\Contracts\Support\Htmlable;
 use Livewire\Component as LivewireComponent;
 
@@ -17,7 +18,7 @@ class Wizard extends Component
 
     protected string | Htmlable | null $cancelAction = null;
 
-    protected bool | Closure $skippable = false;
+    protected bool | Closure $isSkippable = false;
 
     protected string | Closure | null $stepQueryStringKey = null;
 
@@ -28,6 +29,8 @@ class Wizard extends Component
     protected ?Closure $modifyPreviousActionUsing = null;
 
     protected int | Closure $startStep = 1;
+
+    protected ?int $currentStepIndex = null;
 
     /**
      * @var view-string
@@ -63,6 +66,19 @@ class Wizard extends Component
         ]);
 
         $this->registerListeners([
+            'wizard::previousStep' => [
+                function (Wizard $component, string $statePath, int $currentStepIndex): void {
+                    if ($statePath !== $component->getStatePath()) {
+                        return;
+                    }
+
+                    if ($currentStepIndex < 1) {
+                        $currentStepIndex = 1;
+                    }
+
+                    $this->setCurrentStepIndex($currentStepIndex - 1);
+                },
+            ],
             'wizard::nextStep' => [
                 function (Wizard $component, string $statePath, int $currentStepIndex): void {
                     if ($statePath !== $component->getStatePath()) {
@@ -70,21 +86,33 @@ class Wizard extends Component
                     }
 
                     if (! $component->isSkippable()) {
-                        /** @var Step $currentStep */
-                        $currentStep = array_values(
+                        $steps = array_values(
                             $component
                                 ->getChildComponentContainer()
                                 ->getComponents()
-                        )[$currentStepIndex];
+                        );
 
-                        $currentStep->callBeforeValidation();
-                        $currentStep->getChildComponentContainer()->validate();
-                        $currentStep->callAfterValidation();
+                        /** @var Step $currentStep */
+                        $currentStep = $steps[$currentStepIndex];
+                        $this->setCurrentStepIndex($currentStepIndex);
+
+                        /** @var ?Step $nextStep */
+                        $nextStep = $steps[$currentStepIndex + 1] ?? null;
+
+                        try {
+                            $currentStep->callBeforeValidation();
+                            $currentStep->getChildComponentContainer()->validate();
+                            $currentStep->callAfterValidation();
+                            $nextStep?->fillStateWithNull();
+                        } catch (Halt $exception) {
+                            return;
+                        }
                     }
 
                     /** @var LivewireComponent $livewire */
                     $livewire = $component->getLivewire();
                     $livewire->dispatch('next-wizard-step', statePath: $statePath);
+                    $this->setCurrentStepIndex($currentStepIndex + 1);
                 },
             ],
         ]);
@@ -182,7 +210,7 @@ class Wizard extends Component
 
     public function skippable(bool | Closure $condition = true): static
     {
-        $this->skippable = $condition;
+        $this->isSkippable = $condition;
 
         return $this;
     }
@@ -209,7 +237,7 @@ class Wizard extends Component
         if ($this->isStepPersistedInQueryString()) {
             $queryStringStep = request()->query($this->getStepQueryStringKey());
 
-            foreach ($this->getChildComponents() as $index => $step) {
+            foreach ($this->getChildComponentContainer()->getComponents() as $index => $step) {
                 if ($step->getId() !== $queryStringStep) {
                     continue;
                 }
@@ -228,11 +256,23 @@ class Wizard extends Component
 
     public function isSkippable(): bool
     {
-        return (bool) $this->evaluate($this->skippable);
+        return (bool) $this->evaluate($this->isSkippable);
     }
 
     public function isStepPersistedInQueryString(): bool
     {
         return filled($this->getStepQueryStringKey());
+    }
+
+    public function getCurrentStepIndex(): int
+    {
+        return $this->currentStepIndex ??= ($this->getStartStep() - 1);
+    }
+
+    protected function setCurrentStepIndex(int $index): static
+    {
+        $this->currentStepIndex = $index;
+
+        return $this;
     }
 }

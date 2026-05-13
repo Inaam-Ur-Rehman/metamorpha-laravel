@@ -11,15 +11,67 @@ return [
             ],
 
             'add' => [
-                'label' => 'Tambahkan :label',
+
+                'label' => 'Tambahkan ke :label',
+
+                'modal' => [
+
+                    'heading' => 'Tambahkan ke :label',
+
+                    'actions' => [
+
+                        'add' => [
+                            'label' => 'Tambah',
+                        ],
+
+                    ],
+
+                ],
+
             ],
 
             'add_between' => [
-                'label' => 'Sisipkan',
+
+                'label' => 'Sisipkan di antara blok',
+
+                'modal' => [
+
+                    'heading' => 'Tambahkan ke :label',
+
+                    'actions' => [
+
+                        'add' => [
+                            'label' => 'Tambah',
+                        ],
+
+                    ],
+
+                ],
+
             ],
 
             'delete' => [
                 'label' => 'Hapus',
+            ],
+
+            'edit' => [
+
+                'label' => 'Ubah',
+
+                'modal' => [
+
+                    'heading' => 'Ubah blok',
+
+                    'actions' => [
+
+                        'save' => [
+                            'label' => 'Simpan perubahan',
+                        ],
+
+                    ],
+
+                ],
+
             ],
 
             'reorder' => [
@@ -93,7 +145,7 @@ return [
                 ],
 
                 'flip_vertical' => [
-                    'label' => 'Balik gambar vertical',
+                    'label' => 'Balik gambar secara vertikal',
                 ],
 
                 'move_down' => [
@@ -244,7 +296,7 @@ return [
             'ordered_list' => 'Daftar berurut',
             'redo' => 'Kembalikan',
             'strike' => 'Coret',
-            'table' => 'Table',
+            'table' => 'Tabel',
             'undo' => 'Batalkan',
         ],
 
@@ -264,11 +316,11 @@ return [
         'actions' => [
 
             'add' => [
-                'label' => 'Tambahkan :label',
+                'label' => 'Tambahkan ke :label',
             ],
 
             'add_between' => [
-                'label' => 'Sisipkan',
+                'label' => 'Sisipkan di antara',
             ],
 
             'delete' => [
@@ -356,6 +408,8 @@ return [
 
             'create_option' => [
 
+                'label' => 'Buat',
+
                 'modal' => [
 
                     'heading' => 'Buat',
@@ -377,6 +431,8 @@ return [
             ],
 
             'edit_option' => [
+
+                'label' => 'Ubah',
 
                 'modal' => [
 
@@ -424,11 +480,11 @@ return [
         'actions' => [
 
             'hide_password' => [
-                'label' => 'Sembunyikan password',
+                'label' => 'Sembunyikan kata sandi',
             ],
 
             'show_password' => [
-                'label' => 'Tampilkan password',
+                'label' => 'Tampilkan kata sandi',
             ],
 
         ],

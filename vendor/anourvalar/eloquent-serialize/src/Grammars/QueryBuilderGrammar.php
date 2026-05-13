@@ -12,7 +12,7 @@ trait QueryBuilderGrammar
      */
     protected function packQueryBuilder(\Illuminate\Database\Query\Builder $builder): array
     {
-        return [
+        return array_filter([
             'bindings' => $builder->bindings,
             'aggregate' => $builder->aggregate,
             'columns' => $builder->columns,
@@ -20,7 +20,8 @@ trait QueryBuilderGrammar
             'from' => $builder->from,
             'wheres' => $this->packWheres($builder->wheres),
             'groups' => $builder->groups,
-            'havings' => $builder->havings,
+            'havings' => $this->packWheres($builder->havings),
+            'groupLimit' => $builder->groupLimit ?? null,
             'orders' => $builder->orders,
             'limit' => $builder->limit,
             'offset' => $builder->offset,
@@ -28,9 +29,10 @@ trait QueryBuilderGrammar
             'unionLimit' => $builder->unionLimit,
             'unionOffset' => $builder->unionOffset,
             'unionOrders' => $builder->unionOrders,
+            'lock' => $builder->lock,
 
             'joins' => $this->packJoins($builder->joins), // must be the last
-        ];
+        ], fn ($item) => isset($item));
     }
 
     /**
@@ -41,7 +43,7 @@ trait QueryBuilderGrammar
     protected function unpackQueryBuilder(array $data, \Illuminate\Database\Query\Builder $builder): \Illuminate\Database\Query\Builder
     {
         foreach ($data as $key => $value) {
-            if ($key == 'wheres') {
+            if (in_array($key, ['wheres', 'havings'])) {
                 $value = $this->unpackWheres($value, $builder);
             }
 
@@ -69,6 +71,10 @@ trait QueryBuilderGrammar
      */
     private function packWheres($wheres)
     {
+        if (is_null($wheres)) {
+            return $wheres;
+        }
+
         foreach ($wheres as &$item) {
             if (isset($item['query'])) {
                 $item['query'] = $this->packQueryBuilder($item['query']);
@@ -127,6 +133,10 @@ trait QueryBuilderGrammar
      */
     private function unpackWheres($wheres, \Illuminate\Database\Query\Builder $builder)
     {
+        if (is_null($wheres)) {
+            return $wheres;
+        }
+
         foreach ($wheres as &$item) {
             if (isset($item['query'])) {
                 $item['query'] = $this->unpackQueryBuilder($item['query'], $builder->newQuery());

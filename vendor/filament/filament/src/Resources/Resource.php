@@ -443,9 +443,7 @@ abstract class Resource
         return static::$globalSearchResultsLimit;
     }
 
-    public static function modifyGlobalSearchQuery(Builder $query, string $search): void
-    {
-    }
+    public static function modifyGlobalSearchQuery(Builder $query, string $search): void {}
 
     public static function getGlobalSearchResults(string $search): Collection
     {
@@ -613,13 +611,8 @@ abstract class Resource
 
     public static function routes(Panel $panel): void
     {
-        $slug = static::getSlug();
-        $routeBaseName = (string) str($slug)
-            ->replace('/', '.')
-            ->append('.');
-
-        Route::name($routeBaseName)
-            ->prefix($slug)
+        Route::name(static::getRelativeRouteName() . '.')
+            ->prefix(static::getRoutePrefix())
             ->middleware(static::getRouteMiddleware($panel))
             ->withoutMiddleware(static::getWithoutRouteMiddleware($panel))
             ->group(function () use ($panel) {
@@ -627,6 +620,16 @@ abstract class Resource
                     $page->registerRoute($panel)?->name($name);
                 }
             });
+    }
+
+    public static function getRelativeRouteName(): string
+    {
+        return (string) str(static::getSlug())->replace('/', '.');
+    }
+
+    public static function getRoutePrefix(): string
+    {
+        return static::getSlug();
     }
 
     /**
@@ -741,8 +744,6 @@ abstract class Resource
      */
     protected static function applyGlobalSearchAttributeConstraint(Builder $query, string $search, array $searchAttributes, bool &$isFirst): Builder
     {
-        $model = $query->getModel();
-
         $isForcedCaseInsensitive = static::isGlobalSearchForcedCaseInsensitive();
 
         /** @var Connection $databaseConnection */
@@ -754,15 +755,17 @@ abstract class Resource
             $query->when(
                 str($searchAttribute)->contains('.'),
                 function (Builder $query) use ($databaseConnection, $isForcedCaseInsensitive, $searchAttribute, $search, $whereClause): Builder {
-                    return $query->{"{$whereClause}Relation"}(
+                    return $query->{"{$whereClause}Has"}(
                         (string) str($searchAttribute)->beforeLast('.'),
-                        generate_search_column_expression((string) str($searchAttribute)->afterLast('.'), $isForcedCaseInsensitive, $databaseConnection),
-                        'like',
-                        "%{$search}%",
+                        fn (Builder $query) => $query->where(
+                            generate_search_column_expression($query->qualifyColumn((string) str($searchAttribute)->afterLast('.')), $isForcedCaseInsensitive, $databaseConnection),
+                            'like',
+                            "%{$search}%",
+                        ),
                     );
                 },
                 fn (Builder $query) => $query->{$whereClause}(
-                    generate_search_column_expression($searchAttribute, $isForcedCaseInsensitive, $databaseConnection),
+                    generate_search_column_expression($query->qualifyColumn($searchAttribute), $isForcedCaseInsensitive, $databaseConnection),
                     'like',
                     "%{$search}%",
                 ),
@@ -799,7 +802,7 @@ abstract class Resource
         static::$navigationParentItem = $item;
     }
 
-    public static function getNavigationIcon(): ?string
+    public static function getNavigationIcon(): string | Htmlable | null
     {
         return static::$navigationIcon;
     }
@@ -809,7 +812,7 @@ abstract class Resource
         static::$navigationIcon = $icon;
     }
 
-    public static function getActiveNavigationIcon(): ?string
+    public static function getActiveNavigationIcon(): string | Htmlable | null
     {
         return static::$activeNavigationIcon ?? static::getNavigationIcon();
     }

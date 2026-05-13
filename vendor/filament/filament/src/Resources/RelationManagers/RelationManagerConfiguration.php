@@ -9,8 +9,15 @@ class RelationManagerConfiguration
      * @param  array<string, mixed>  $properties
      */
     public function __construct(
-        readonly public string $relationManager,
-        readonly public array $properties = [],
-    ) {
+        public readonly string $relationManager,
+        protected array $properties = [],
+    ) {}
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 }

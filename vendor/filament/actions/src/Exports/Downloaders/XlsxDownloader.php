@@ -15,11 +15,24 @@ class XlsxDownloader implements Downloader
     public function __invoke(Export $export): StreamedResponse
     {
         $disk = $export->getFileDisk();
+        $directory = $export->getFileDirectory();
+
+        if (! $disk->exists($directory)) {
+            abort(404);
+        }
 
         $fileName = $export->file_name . '.xlsx';
 
-        if ($disk->exists($filePath = $export->getFileDirectory() . DIRECTORY_SEPARATOR . $fileName)) {
-            return $disk->download($filePath);
+        if ($disk->exists($filePath = $directory . DIRECTORY_SEPARATOR . $fileName)) {
+            $response = $disk->download($filePath);
+
+            if (ob_get_length() > 0) {
+                ob_end_clean();
+            }
+
+            $response->headers->set('X-Vapor-Base64-Encode', 'True');
+
+            return $response;
         }
 
         $writer = app(Writer::class);
@@ -29,19 +42,19 @@ class XlsxDownloader implements Downloader
         $writeRowsFromFile = function (string $file) use ($csvDelimiter, $disk, $writer) {
             $csvReader = CsvReader::createFromStream($disk->readStream($file));
             $csvReader->setDelimiter($csvDelimiter);
-            $csvResults = Statement::create()->process($csvReader);
+            $csvResults = (new Statement)->process($csvReader);
 
             foreach ($csvResults->getRecords() as $row) {
                 $writer->addRow(Row::fromValues($row));
             }
         };
 
-        return response()->streamDownload(function () use ($disk, $export, $fileName, $writer, $writeRowsFromFile) {
+        return response()->streamDownload(function () use ($disk, $directory, $fileName, $writer, $writeRowsFromFile) {
             $writer->openToBrowser($fileName);
 
-            $writeRowsFromFile($export->getFileDirectory() . DIRECTORY_SEPARATOR . 'headers.csv');
+            $writeRowsFromFile($directory . DIRECTORY_SEPARATOR . 'headers.csv');
 
-            foreach ($disk->files($export->getFileDirectory()) as $file) {
+            foreach ($disk->files($directory) as $file) {
                 if (str($file)->endsWith('headers.csv')) {
                     continue;
                 }

@@ -9,7 +9,7 @@ return [
     'actions' => [
 
         'login' => [
-            'label' => 'kembali ke halaman masuk',
+            'label' => 'Kembali ke halaman masuk',
         ],
 
     ],
@@ -31,6 +31,10 @@ return [
     ],
 
     'notifications' => [
+
+        'sent' => [
+            'body' => 'Jika akun Anda tidak ada, Anda tidak akan menerima email.',
+        ],
 
         'throttled' => [
             'title' => 'Terlalu banyak permintaan',

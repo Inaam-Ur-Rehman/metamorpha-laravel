@@ -10,6 +10,7 @@
 >
     <a
         {{ \Filament\Support\generate_href_html($url) }}
+        x-on:click="close()"
         @class([
             'fi-global-search-result-link block outline-none',
             'pe-4 ps-4 pt-4' => $actions,
@@ -24,7 +25,9 @@
             <dl class="mt-1">
                 @foreach ($details as $label => $value)
                     <div class="text-sm text-gray-500 dark:text-gray-400">
-                        <dt class="inline font-medium">{{ $label }}:</dt>
+                        @if ($isAssoc ??= \Illuminate\Support\Arr::isAssoc($details))
+                            <dt class="inline font-medium">{{ $label }}:</dt>
+                        @endif
 
                         <dd class="inline">{{ $value }}</dd>
                     </div>

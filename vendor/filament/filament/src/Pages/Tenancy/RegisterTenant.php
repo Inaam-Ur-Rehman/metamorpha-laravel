@@ -15,15 +15,16 @@ use Filament\Support\Facades\FilamentView;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 use function Filament\authorize;
-use function Filament\Support\is_app_url;
 
 /**
  * @property Form $form
  */
 abstract class RegisterTenant extends SimplePage
 {
+    use Concerns\CanUseDatabaseTransactions;
     use Concerns\HasRoutes;
     use InteractsWithFormActions;
 
@@ -69,7 +70,11 @@ abstract class RegisterTenant extends SimplePage
 
     public function register(): void
     {
+        abort_unless(static::canView(), 404);
+
         try {
+            $this->beginDatabaseTransaction();
+
             $this->callHook('beforeValidate');
 
             $data = $this->form->getState();
@@ -86,11 +91,21 @@ abstract class RegisterTenant extends SimplePage
 
             $this->callHook('afterRegister');
         } catch (Halt $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $this->rollBackDatabaseTransaction() :
+                $this->commitDatabaseTransaction();
+
             return;
+        } catch (Throwable $exception) {
+            $this->rollBackDatabaseTransaction();
+
+            throw $exception;
         }
 
+        $this->commitDatabaseTransaction();
+
         if ($redirectUrl = $this->getRedirectUrl()) {
-            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode() && is_app_url($redirectUrl));
+            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
         }
     }
 

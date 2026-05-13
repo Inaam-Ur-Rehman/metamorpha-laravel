@@ -12,15 +12,15 @@ return [
 
     'profiles' => [
 
-        /*'default' => [
+        'default' => [
             'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table toc wordcount',
-            'toolbar' => 'undo redo ',
-            'upload_directory' => "public",
-        ],*/
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | rtl ltr | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
+            'upload_directory' => null,
+        ],
 
         'simple' => [
             'plugins' => 'autoresize directionality emoticons link wordcount',
-            'toolbar' => 'removeformat | bold italic underline | rtl ltr | link emoticons',
+            'toolbar' => 'removeformat | bold italic | rtl ltr | link emoticons',
             'upload_directory' => null,
         ],
 
@@ -39,17 +39,28 @@ return [
         |
         */
 
-        
-       'default' => [
+        /*
+          'default' => [
             'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table toc wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic underline | rtl ltr | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | rtl ltr | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
             'custom_configs' => [
                 'allow_html_in_named_anchor' => true,
                 'link_default_target' => '_blank',
                 'codesample_global_prismjs' => true,
                 'image_advtab' => true,
+                'image_class_list' => [
+                  [
+                    'title' => 'None',
+                    'value' => '',
+                  ],
+                  [
+                    'title' => 'Fluid',
+                    'value' => 'img-fluid',
+                  ],
+              ],
             ]
         ],
+        */
 
     ],
 

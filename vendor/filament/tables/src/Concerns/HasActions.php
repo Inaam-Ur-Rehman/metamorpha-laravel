@@ -11,6 +11,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Url;
+use Throwable;
 
 use function Livewire\store;
 
@@ -61,9 +62,7 @@ trait HasActions
     #[Url(as: 'tableActionRecord')]
     public $defaultTableActionRecord = null;
 
-    protected function configureTableAction(Action $action): void
-    {
-    }
+    protected function configureTableAction(Action $action): void {}
 
     /**
      * @param  array<string, mixed>  $arguments
@@ -86,22 +85,28 @@ trait HasActions
 
         $action->mergeArguments($arguments);
 
-        $form = $this->getMountedTableActionForm();
+        $form = $this->getMountedTableActionForm(mountedAction: $action);
 
         $result = null;
 
         $originallyMountedActions = $this->mountedTableActions;
 
         try {
-            if ($this->mountedTableActionHasForm()) {
+            $action->beginDatabaseTransaction();
+
+            if ($this->mountedTableActionHasForm(mountedAction: $action)) {
                 $action->callBeforeFormValidated();
 
-                $action->formData($form->getState());
+                $form->getState(afterValidate: function (array $state) use ($action) {
+                    $action->callAfterFormValidated();
 
-                $action->callAfterFormValidated();
+                    $action->formData($state);
+
+                    $action->callBefore();
+                });
+            } else {
+                $action->callBefore();
             }
-
-            $action->callBefore();
 
             $result = $action->call([
                 'form' => $form,
@@ -109,10 +114,19 @@ trait HasActions
 
             $result = $action->callAfter() ?? $result;
         } catch (Halt $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $action->rollBackDatabaseTransaction() :
+                $action->commitDatabaseTransaction();
+
             return null;
         } catch (Cancel $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $action->rollBackDatabaseTransaction() :
+                $action->commitDatabaseTransaction();
         } catch (ValidationException $exception) {
-            if (! $this->mountedTableActionShouldOpenModal()) {
+            $action->rollBackDatabaseTransaction();
+
+            if (! $this->mountedTableActionShouldOpenModal(mountedAction: $action)) {
                 $action->resetArguments();
                 $action->resetFormData();
 
@@ -120,7 +134,13 @@ trait HasActions
             }
 
             throw $exception;
+        } catch (Throwable $exception) {
+            $action->rollBackDatabaseTransaction();
+
+            throw $exception;
         }
+
+        $action->commitDatabaseTransaction();
 
         if (store($this)->has('redirect')) {
             return $result;
@@ -178,17 +198,17 @@ trait HasActions
             return null;
         }
 
-        $this->cacheMountedTableActionForm();
+        $this->cacheMountedTableActionForm(mountedAction: $action);
 
         try {
-            $hasForm = $this->mountedTableActionHasForm();
+            $hasForm = $this->mountedTableActionHasForm(mountedAction: $action);
 
             if ($hasForm) {
                 $action->callBeforeFormFilled();
             }
 
             $action->mount([
-                'form' => $this->getMountedTableActionForm(),
+                'form' => $this->getMountedTableActionForm(mountedAction: $action),
             ]);
 
             if ($hasForm) {
@@ -202,7 +222,7 @@ trait HasActions
             return null;
         }
 
-        if (! $this->mountedTableActionShouldOpenModal()) {
+        if (! $this->mountedTableActionShouldOpenModal(mountedAction: $action)) {
             return $this->callMountedTableAction();
         }
 
@@ -222,25 +242,16 @@ trait HasActions
         $this->mountTableAction($name, $record ?? $this->mountedTableActionRecord, $arguments);
     }
 
-    public function mountedTableActionShouldOpenModal(): bool
+    public function mountedTableActionShouldOpenModal(?Action $mountedAction = null): bool
     {
-        $action = $this->getMountedTableAction();
-
-        if ($action->isModalHidden()) {
-            return false;
-        }
-
-        return $action->hasCustomModalHeading() ||
-            $action->hasModalDescription() ||
-            $action->hasModalContent() ||
-            $action->hasModalContentFooter() ||
-            $action->getInfolist() ||
-            $this->mountedTableActionHasForm();
+        return ($mountedAction ?? $this->getMountedTableAction())->shouldOpenModal(
+            checkForFormUsing: $this->mountedTableActionHasForm(...),
+        );
     }
 
-    public function mountedTableActionHasForm(): bool
+    public function mountedTableActionHasForm(?Action $mountedAction = null): bool
     {
-        return (bool) count($this->getMountedTableActionForm()?->getComponents() ?? []);
+        return (bool) count($this->getMountedTableActionForm(mountedAction: $mountedAction)?->getComponents() ?? []);
     }
 
     public function getMountedTableAction(): ?Action
@@ -252,11 +263,11 @@ trait HasActions
         return $this->getTable()->getAction($this->mountedTableActions);
     }
 
-    public function getMountedTableActionForm(): ?Form
+    public function getMountedTableActionForm(?Action $mountedAction = null): ?Form
     {
-        $action = $this->getMountedTableAction();
+        $mountedAction ??= $this->getMountedTableAction();
 
-        if (! $action) {
+        if (! $mountedAction) {
             return null;
         }
 
@@ -264,7 +275,7 @@ trait HasActions
             return $this->getForm('mountedTableActionForm');
         }
 
-        return $action->getForm(
+        return $mountedAction->getForm(
             $this->makeForm()
                 ->model($this->getMountedTableActionRecord() ?? $this->getTable()->getModel())
                 ->statePath('mountedTableActionsData.' . array_key_last($this->mountedTableActionsData))
@@ -295,6 +306,7 @@ trait HasActions
         try {
             return array_pop($this->mountedTableActions);
         } finally {
+            array_pop($this->mountedTableActionsArguments);
             array_pop($this->mountedTableActionsData);
         }
     }
@@ -306,7 +318,7 @@ trait HasActions
         $this->mountedTableActionsData = [];
     }
 
-    public function unmountTableAction(bool $shouldCancelParentActions = true): void
+    public function unmountTableAction(bool $shouldCancelParentActions = true, bool $shouldCloseModal = true): void
     {
         $action = $this->getMountedTableAction();
 
@@ -330,7 +342,9 @@ trait HasActions
         }
 
         if (! count($this->mountedTableActions)) {
-            $this->closeTableActionModal();
+            if ($shouldCloseModal) {
+                $this->closeTableActionModal();
+            }
 
             $action?->record(null);
             $this->mountedTableActionRecord(null);
@@ -353,11 +367,11 @@ trait HasActions
         $this->openTableActionModal();
     }
 
-    protected function cacheMountedTableActionForm(): void
+    protected function cacheMountedTableActionForm(?Action $mountedAction = null): void
     {
         $this->cacheForm(
             'mountedTableActionForm',
-            fn () => $this->getMountedTableActionForm(),
+            fn () => $this->getMountedTableActionForm($mountedAction),
         );
     }
 

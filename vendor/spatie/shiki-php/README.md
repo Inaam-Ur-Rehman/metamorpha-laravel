@@ -1,11 +1,8 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Code highlighting with Shiki in PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/shiki-php.svg?style=flat-square)](https://packagist.org/packages/spatie/shiki-php)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/shiki-php/Tests)](https://github.com/spatie/shiki-php/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/shiki-php/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/shiki-php/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/spatie/shiki-php/run-tests.yml?branch=main&label=Tests)](https://github.com/spatie/shiki-php/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/spatie/shiki-php/php-cs-fixer.yml?branch=main&label=Code%20Style)](https://github.com/spatie/shiki-php/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/shiki-php.svg?style=flat-square)](https://packagist.org/packages/spatie/shiki-php)
 
 [Shiki](https://github.com/shikijs/shiki) is a beautiful syntax highlighter powered by the same language engine that many code editors use. This package allows you to use Shiki from PHP.
@@ -45,7 +42,9 @@ You can install the package via composer:
 composer require spatie/shiki-php
 ```
 
-In your project, you should have the JavaScript package [`shiki`](https://github.com/shikijs/shiki) installed. You can install it via npm...
+In your project, you must have the JavaScript package [`shiki`](https://github.com/shikijs/shiki) installed, otherwise the `<pre>` element will not be present in the output. 
+
+You can install it via npm
 
 ```bash
 npm install shiki
@@ -57,7 +56,7 @@ npm install shiki
 yarn add shiki
 ```
 
-Make sure you have installed Node 10 or higher.
+Make sure you have installed Node 20 or higher.
 
 ## Usage
 
@@ -117,40 +116,6 @@ Shiki::highlight(
 
 You can then target these classes in your own CSS to color these lines how you want.
 
-## PHP 7.4 support
-
-Shiki has a nice and easy syntax in combination with at least PHP 8.
-
-It does support PHP 7.4, but does loose a little bit of it's nice syntax if using it with PHP7.4, as you need to follow the order of the variables.
-
-```php
-// As reference
-highlight(
-    string $code,
-    ?string $language = 'php',
-    ?string $theme = 'nord',
-    ?array $highlightLines = [],
-    ?array $addLines = [],
-    ?array $deleteLines = [],
-    ?array $focusLines = []
-)
-
-// Instead of PHP 8 syntax
-Shiki::highlight(
-    code: $code,
-    language: 'php',
-    deleteLines: [1],
-);
-
-// You need to follow PHP 7.4 syntax
-Shiki::highlight(
-    $code,
-    'php',
-    null,
-    null,
-    [1],
-);
-
 ## Determining available languages
 
 To get an array with [all languages that Shiki supports](https://github.com/shikijs/shiki/blob/master/docs/languages.md), call `getAvailableLanguages`
@@ -199,7 +164,7 @@ then the package will be unlikely to find your version of node as it looks for t
 the node distributable in your NVM folder, to that of the `usr/local/bin`. Such a command might look like this:
 
 ```bash
-sudo ln -s /home/some-user/.nvm/versions/node/v17.3.1/bin/node /usr/local/bin/node
+sudo ln -s /home/some-user/.nvm/versions/node/v20.11.1/bin/node /usr/local/bin/node
 ```
 
 Creating this symlink will allow the package to find your NPM executable. Please note, if you change

@@ -2,6 +2,86 @@
 
 All notable changes to `laravel-markdown` will be documented in this file.
 
+## 2.7.1 - 2025-02-21
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-markdown/pull/89
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/spatie/laravel-markdown/pull/89
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.7.0...2.7.1
+
+## 2.7.0 - 2024-12-10
+
+### What's Changed
+
+* Fixed a typo by @makkinga in https://github.com/spatie/laravel-markdown/pull/87
+* Upgrade commonmark by @timvandijck in https://github.com/spatie/laravel-markdown/pull/88
+
+### New Contributors
+
+* @makkinga made their first contribution in https://github.com/spatie/laravel-markdown/pull/87
+* @timvandijck made their first contribution in https://github.com/spatie/laravel-markdown/pull/88
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.6.0...2.7.0
+
+## 2.6.0 - 2024-11-12
+
+### What's Changed
+
+* feat: support (at least) dual themes by @Barbapapazes in https://github.com/spatie/laravel-markdown/pull/86
+
+### New Contributors
+
+* @Barbapapazes made their first contribution in https://github.com/spatie/laravel-markdown/pull/86
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.5.2...2.6.0
+
+## 2.5.2 - 2024-04-22
+
+### What's Changed
+
+* Fix breaking change cache duration by @chillbram in https://github.com/spatie/laravel-markdown/pull/77
+
+### New Contributors
+
+* @chillbram made their first contribution in https://github.com/spatie/laravel-markdown/pull/77
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.5.1...2.5.2
+
+## 2.5.1 - 2024-04-12
+
+### What's Changed
+
+* Add cache duration configurability  by @alxndrmlr in https://github.com/spatie/laravel-markdown/pull/76
+
+### New Contributors
+
+* @alxndrmlr made their first contribution in https://github.com/spatie/laravel-markdown/pull/76
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.5.0...2.5.1
+
+## 2.5.0 - 2024-02-26
+
+* Update the `commonmark-shiki-highlighter` dependency to support Shiki 1.
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.4.2...2.5.0
+
+## 2.4.2 - 2024-01-11
+
+### What's Changed
+
+* Allow Laravel 11 by @TomasVotruba in https://github.com/spatie/laravel-markdown/pull/71
+
+### New Contributors
+
+* @TomasVotruba made their first contribution in https://github.com/spatie/laravel-markdown/pull/71
+
+**Full Changelog**: https://github.com/spatie/laravel-markdown/compare/2.4.1...2.4.2
+
 ## 2.4.1 - 2023-12-30
 
 ### What's Changed

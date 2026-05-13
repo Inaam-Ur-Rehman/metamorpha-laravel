@@ -3,15 +3,17 @@
 
 @if ($direction == 'left')
     <div class="mx-auto my-6 max-w-7xl" x-data="{
-        showMore: false,
-        toggleShowMore() {
-            this.showMore = !this.showMore
-        }
-    }">
+                        showMore: false,
+                        toggleShowMore() {
+                            this.showMore = !this.showMore
+                        }
+                    }">
         <img src="{{ Storage::url($image) }}" alt="Bart" class="mx-auto md:m-4 md:float-left w-80" />
         <div class="p-2">
             <h2 class="relative inline max-w-max text-3xl uppercase !font-vp700 md:text-4xl my-4">
-                {{ $name }}
+                @if($name && $name != "null")
+                    {{ $name }}
+                @endif
                 <span style="background-color: {{ $color }}"
                     class="absolute left-0 w-full h-3 -z-10 bottom-[0.2em] "></span>
             </h2>
@@ -48,18 +50,17 @@
     </div>
 @else
     <div class="mx-auto my-12 max-w-7xl" x-data="{
-        showMore: false,
-        toggleShowMore() {
-            this.showMore = !this.showMore
-        }
-    }">
+                        showMore: false,
+                        toggleShowMore() {
+                            this.showMore = !this.showMore
+                        }
+                    }">
         <img src="{{ Storage::url($image) }}" alt="Bart" class="mx-auto md:m-4 md:float-right w-80" />
 
         <div class="p-2">
             <h2 class="relative inline max-w-max text-3xl uppercase !font-vp700 md:text-4xl my-4">
                 {{ $name }}
-                <span style="background-color: {{ $color }}"
-                    class="absolute left-0 w-full h-3 -z-10 bottom-[0.2em]"></span>
+                <span style="background-color: {{ $color }}" class="absolute left-0 w-full h-3 -z-10 bottom-[0.2em]"></span>
             </h2>
             <div class="mt-4 !font-v400 prose-base prose-ul:list-disc prose-a:underline underline-offset-2">
                 {!! $content !!}

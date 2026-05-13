@@ -72,8 +72,11 @@ trait EvaluatesClosures
         }
 
         if (
-            isset($this->evaluationIdentifier) &&
-            ($parameterName === $this->evaluationIdentifier)
+            (
+                isset($this->evaluationIdentifier) &&
+                ($parameterName === $this->evaluationIdentifier)
+            ) ||
+            ($typedParameterClassName === static::class)
         ) {
             return $this;
         }
@@ -127,7 +130,7 @@ trait EvaluatesClosures
 
         $class = $parameter->getDeclaringClass();
 
-        if (blank($class)) {
+        if (is_null($class)) {
             return $name;
         }
 

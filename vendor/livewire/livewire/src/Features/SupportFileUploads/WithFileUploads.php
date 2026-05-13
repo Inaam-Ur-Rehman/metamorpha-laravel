@@ -5,9 +5,11 @@ namespace Livewire\Features\SupportFileUploads;
 use Facades\Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\UploadedFile;
+use Livewire\Attributes\Renderless;
 
 trait WithFileUploads
 {
+    #[Renderless]
     function _startUpload($name, $fileInfo, $isMultiple)
     {
         if (FileUploadConfiguration::isUsingS3()) {
@@ -23,15 +25,26 @@ trait WithFileUploads
         $this->dispatch('upload:generatedSignedUrl', name: $name, url: GenerateSignedUploadUrl::forLocal())->self();
     }
 
-    function _finishUpload($name, $tmpPath, $isMultiple)
+    function _finishUpload($name, $tmpPath, $isMultiple, $append = false)
     {
-        $this->cleanupOldUploads();
+        if (FileUploadConfiguration::shouldCleanupOldUploads()) {
+            $this->cleanupOldUploads();
+        }
 
         if ($isMultiple) {
             $file = collect($tmpPath)->map(function ($i) {
                 return TemporaryUploadedFile::createFromLivewire($i);
             })->toArray();
             $this->dispatch('upload:finished', name: $name, tmpFilenames: collect($file)->map->getFilename()->toArray())->self();
+
+            if ($append) {
+                $existing = $this->getPropertyValue($name);
+                if ($existing instanceof \Illuminate\Support\Collection) {
+                    $file = $existing->merge($file);
+                } elseif (is_array($existing)) {
+                    $file = array_merge($existing, $file);
+                }
+            }
         } else {
             $file = TemporaryUploadedFile::createFromLivewire($tmpPath[0]);
             $this->dispatch('upload:finished', name: $name, tmpFilenames: [$file->getFilename()])->self();
@@ -113,4 +126,3 @@ trait WithFileUploads
         }
     }
 }
-

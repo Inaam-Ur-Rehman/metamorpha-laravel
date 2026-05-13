@@ -3,6 +3,71 @@
 All notable changes to `filament-peek` will be documented in this file.
 
 
+## 2.4.0 - 2025-03-14
+
+* feat: Open preview in new browser tab
+
+
+## 2.3.0 - 2025-02-25
+
+* chore: Laravel 12.x Compatibility
+* chore: Update Github Actions
+* chore: bump dependabot/fetch-metadata from 2.2.0 to 2.3.0
+* chore: bump aglipanci/laravel-pint-action from 2.4 to 2.5
+
+
+## 2.2.11 - 2025-01-03
+
+* enh: Add Turkish translations by @AzizEmir
+* fix: Use FQCN for Arr in Blade views
+
+
+## 2.2.10 - 2024-10-15
+
+* fix: Remove tailwind utils from plugin.css
+
+
+## 2.2.9 - 2024-09-04
+
+* enh: Add Czech translations by @JarkaP
+
+
+## 2.2.8 - 2024-08-29
+
+* enh: Add Dutch translations by @el-klo
+* chore: bump dependabot/fetch-metadata from 2.1.0 to 2.2.0
+
+
+## 2.2.7 - 2024-05-03
+
+* fix: Remove filament vendor views from tailwind content config
+* enh: Fix preview styles on mobile screens
+* chore: bump dependabot/fetch-metadata from 2.0.0 to 2.1.0
+
+
+## 2.2.6 - 2024-04-24
+
+* enh: Support ListPreviewAction with relation managers
+* chore: bump dependabot/fetch-metadata from 1.6.0 to 2.0.0
+* chore: bump aglipanci/laravel-pint-action from 2.3.1 to 2.4
+
+
+## 2.2.5 - 2024-03-11
+
+* chore: Add Laravel 11 compatibility by @bambamboole
+* chore: bump ramsey/composer-install from 2 to 3
+
+
+## 2.2.4 - 2024-03-02
+
+* fix: Fix iframe not refreshing when using internalPreviewUrl by @FDT2k
+
+
+## 2.2.3 - 2024-01-31
+
+* fix: Call beforeStateDehydrated hook by default to handle image uploads
+
+
 ## 2.2.2 - 2024-01-13
 
 * fix: Don't call state hooks by default when opening the preview modal

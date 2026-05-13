@@ -3,7 +3,7 @@
 <p>
 <a href="https://github.com/pboivin/filament-peek/actions"><img src="https://github.com/pboivin/filament-peek/workflows/run-tests/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/pboivin/filament-peek"><img src="https://img.shields.io/packagist/v/pboivin/filament-peek" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/pboivin/filament-peek"><img src="http://poser.pugx.org/pboivin/filament-peek/downloads" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/pboivin/filament-peek"><img src="https://img.shields.io/packagist/dt/pboivin/filament-peek" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/pboivin/filament-peek"><img src="https://img.shields.io/packagist/l/pboivin/filament-peek" alt="License"></a>
 </p>
 
@@ -62,7 +62,7 @@ Here are a few example projects available to give this plugin a try:
 | Repository | Description |
 |------|----------|
 | [filament-peek-demo](https://github.com/pboivin/filament-peek-demo) | Content previews on a simple Filament project with Laravel Blade views. |
-| [filament-peek-demo-with-astro](https://github.com/pboivin/filament-peek-demo-with-astro) | Content previews on a more complex project with Filament as "headless CMS", and [Astro](https://astro.build/) on the front-end. (Work in progress) |
+| [filament-peek-demo-with-astro](https://github.com/pboivin/filament-peek-demo-with-astro) | Content previews on a more complex project with Filament as "headless CMS", and [Astro](https://astro.build/) on the front-end. (Archived) |
 | [Log1x/filament-starter](https://github.com/Log1x/filament-starter) | A great starting point for TALL stack projects using Filament. Implements content previews using full-page Livewire components. |
 
 ## Documentation
@@ -85,6 +85,7 @@ The documentation is available in the ['docs' directory](https://github.com/pboi
     - [Preview Pointer Events](https://github.com/pboivin/filament-peek/blob/2.x/docs/page-previews.md#preview-pointer-events)
     - [Adding Extra Data to Previews](https://github.com/pboivin/filament-peek/blob/2.x/docs/page-previews.md#adding-extra-data-to-previews)
     - [Alternate Templating Engines](https://github.com/pboivin/filament-peek/blob/2.x/docs/page-previews.md#alternate-templating-engines)
+    - [Opening the Preview in a New Tab](https://github.com/pboivin/filament-peek/blob/2.x/docs/page-previews.md#opening-the-preview-in-a-new-tab)
 - [Builder Previews](https://github.com/pboivin/filament-peek/blob/2.x/docs/builder-previews.md)
     - [Overview](https://github.com/pboivin/filament-peek/blob/2.x/docs/builder-previews.md#overview)
     - [Using Builder Previews on Edit pages](https://github.com/pboivin/filament-peek/blob/2.x/docs/builder-previews.md#using-builder-previews-on-edit-pages)
@@ -99,6 +100,10 @@ The documentation is available in the ['docs' directory](https://github.com/pboi
 - [Upgrading from v1.x](https://github.com/pboivin/filament-peek/blob/2.x/docs/upgrade-guide.md)
 
 <!-- END_TOC -->
+
+## FAQ and Known Issues
+
+I've started compiling some notes and solutions to common issues in [Discussions](https://github.com/pboivin/filament-peek/discussions/categories/general). Feel free to contribute your own tips and tricks.
 
 ## Changelog
 
@@ -124,3 +129,4 @@ The initial idea is heavily inspired by module previews in [Twill CMS](https://t
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/pboivin/filament-peek/blob/2.x/LICENSE.md) for more information.
+

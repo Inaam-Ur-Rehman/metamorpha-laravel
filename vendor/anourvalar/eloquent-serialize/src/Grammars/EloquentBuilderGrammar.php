@@ -2,18 +2,21 @@
 
 namespace AnourValar\EloquentSerialize\Grammars;
 
+use Laravel\SerializableClosure\SerializableClosure;
+
 trait EloquentBuilderGrammar
 {
     /**
      * Serialize state for \Illuminate\Database\Eloquent\Builder
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array|null $parentModels
      * @return array
      */
-    protected function packEloquentBuilder(\Illuminate\Database\Eloquent\Builder $builder): array
+    protected function packEloquentBuilder(\Illuminate\Database\Eloquent\Builder $builder, ?array $parentModels = null): array
     {
         return [
-            'with' => $this->getEagers($builder), // preloaded ("eager") relations
+            'with' => $this->getEagers($builder, $parentModels ?? []), // preloaded ("eager") relations
             'removed_scopes' => $builder->removedScopes(), // global scopes
             'casts' => $builder->getModel()->getCasts(),
         ];
@@ -44,9 +47,10 @@ trait EloquentBuilderGrammar
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param $parentModels
      * @return array
      */
-    private function getEagers(\Illuminate\Database\Eloquent\Builder $builder): array
+    private function getEagers(\Illuminate\Database\Eloquent\Builder $builder, array $parentModels): array
     {
         $result = [];
 
@@ -57,11 +61,21 @@ trait EloquentBuilderGrammar
             }
             $referenceRelation = clone $relation;
 
+            if (count(array_filter($parentModels, fn ($item) => $item == get_class($referenceRelation->getModel()))) > 1) {
+                $result[$name] = ['closure' => serialize(new SerializableClosure($value))]; // recursion detected...
+                continue;
+            }
+            $parentModels[] = get_class($builder->getModel());
+
             $value($relation); // apply closure
-            $result[$name] = $this->packQueryBuilder($relation->getQuery()->getQuery());
+            $result[$name] = [
+                'query' => $this->packQueryBuilder($relation->getQuery()->getQuery()),
+                'eloquent' => $this->packEloquentBuilder($relation->getQuery(), $parentModels),
+                'extra' => $relation->exportExtraParametersForSerialize(),
+            ];
 
             $relation->getQuery()->getModel()->newInstance()->with($name)->getEagerLoads()[$name]($referenceRelation);
-            $this->cleanStaticConstraints($result[$name], $this->packQueryBuilder($referenceRelation->getQuery()->getQuery()));
+            $this->cleanStaticConstraints($result[$name]['query'], $this->packQueryBuilder($referenceRelation->getQuery()->getQuery()));
         }
 
         return $result;
@@ -75,13 +89,30 @@ trait EloquentBuilderGrammar
     private function setEagers(\Illuminate\Database\Eloquent\Builder $builder, array $eagers): void
     {
         foreach ($eagers as &$value) {
+            if (isset($value['closure'])) {
+                $value = unserialize($value['closure'])->getClosure();
+                continue;
+            }
+
             $value = function ($query) use ($value) {
+                if (isset($value['extra'])) {
+                    $query->importExtraParametersForSerialize($value['extra']);
+                }
+
+                // Input argument may be different depends on context
+                while (! ($query instanceof \Illuminate\Database\Eloquent\Builder)) {
+                    $query = $query->getQuery();
+                }
+                if (isset($value['eloquent'])) {
+                    $this->unpackEloquentBuilder($value['eloquent'], $query);
+                }
+
                 // Input argument may be different depends on context
                 while (! ($query instanceof \Illuminate\Database\Query\Builder)) {
                     $query = $query->getQuery();
                 }
 
-                $this->unpackQueryBuilder($value, $query);
+                $this->unpackQueryBuilder(isset($value['query']) ? $value['query'] : $value, $query);
             };
         }
         unset($value);
@@ -98,16 +129,16 @@ trait EloquentBuilderGrammar
     {
         $properties = [
             'aggregate', 'columns', 'distinct', 'wheres', 'groups', 'havings', 'orders', 'limit', 'offset', 'unions',
-            'unionLimit', 'unionOffset', 'unionOrders', 'joins',
+            'unionLimit', 'unionOffset', 'unionOrders', 'joins', 'groupLimit',
         ];
 
         foreach ($properties as $property) {
-            if (! is_array($packedQueryBuilder[$property])) {
+            if (! is_array($packedQueryBuilder[$property] ?? null)) {
                 continue;
             }
 
             foreach ($packedQueryBuilder[$property] as $key => $item) {
-                if (in_array($item, (array) $packedReferenceQueryBuilder[$property], true)) {
+                if (in_array($item, (array) ($packedReferenceQueryBuilder[$property] ?? null), true)) {
                     unset($packedQueryBuilder[$property][$key]);
                 }
             }

@@ -24,15 +24,18 @@ class ComponentManager implements ScopedComponentManager
      */
     protected array $methodCache = [];
 
-    final public function __construct()
-    {
-    }
+    final public function __construct() {}
 
     public static function resolve(): ScopedComponentManager
     {
         if (app()->resolved(ScopedComponentManager::class)) {
             return static::resolveScoped();
         }
+
+        app()->singletonIf(
+            ComponentManager::class,
+            fn () => new ComponentManager,
+        );
 
         return app(ComponentManager::class);
     }
@@ -58,7 +61,19 @@ class ComponentManager implements ScopedComponentManager
         }
 
         if (! $during) {
-            return null;
+            $configurationKey = $isImportant ?
+                array_key_last($this->importantConfigurations[$component]) :
+                array_key_last($this->configurations[$component]);
+
+            return function () use ($component, $configurationKey, $isImportant) {
+                if ($isImportant) {
+                    unset($this->importantConfigurations[$component][$configurationKey]);
+
+                    return;
+                }
+
+                unset($this->configurations[$component][$configurationKey]);
+            };
         }
 
         try {

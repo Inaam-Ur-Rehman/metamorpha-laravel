@@ -50,12 +50,22 @@ abstract class BasePage extends Component implements HasActions, HasForms, HasIn
 
     public function render(): View
     {
-        return view(static::$view, $this->getViewData())
-            ->layout(static::$layout, [
+        return view($this->getView(), $this->getViewData())
+            ->layout($this->getLayout(), [
                 'livewire' => $this,
                 'maxContentWidth' => $this->getMaxContentWidth(),
                 ...$this->getLayoutData(),
             ]);
+    }
+
+    public function getView(): string
+    {
+        return static::$view;
+    }
+
+    public function getLayout(): string
+    {
+        return static::$layout;
     }
 
     public function getHeading(): string | Htmlable
@@ -114,9 +124,9 @@ abstract class BasePage extends Component implements HasActions, HasForms, HasIn
         (static::$reportValidationErrorUsing)($exception);
     }
 
-    protected function halt(): void
+    protected function halt(bool $shouldRollbackDatabaseTransaction = false): void
     {
-        throw new Halt();
+        throw (new Halt)->rollBackDatabaseTransaction($shouldRollbackDatabaseTransaction);
     }
 
     protected function callHook(string $hook): void

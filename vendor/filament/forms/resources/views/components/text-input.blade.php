@@ -4,6 +4,7 @@
 
     $datalistOptions = $getDatalistOptions();
     $extraAlpineAttributes = $getExtraAlpineAttributes();
+    $hasInlineLabel = $hasInlineLabel();
     $id = $getId();
     $isConcealed = $isConcealed();
     $isDisabled = $isDisabled();
@@ -18,6 +19,7 @@
     $suffixIcon = $getSuffixIcon();
     $suffixLabel = $getSuffixLabel();
     $statePath = $getStatePath();
+    $placeholder = $getPlaceholder();
 
     if ($isPasswordRevealable) {
         $xData = '{ isPasswordRevealed: false }';
@@ -39,8 +41,17 @@
 <x-dynamic-component
     :component="$getFieldWrapperView()"
     :field="$field"
-    :inline-label-vertical-alignment="\Filament\Support\Enums\VerticalAlignment::Center"
+    :has-inline-label="$hasInlineLabel"
 >
+    <x-slot
+        name="label"
+        @class([
+            'sm:pt-1.5' => $hasInlineLabel,
+        ])
+    >
+        {{ $getLabel() }}
+    </x-slot>
+
     <x-filament::input.wrapper
         :disabled="$isDisabled"
         :inline-prefix="$isPrefixInline"
@@ -78,7 +89,7 @@
                         'maxlength' => (! $isConcealed) ? $getMaxLength() : null,
                         'min' => (! $isConcealed) ? $getMinValue() : null,
                         'minlength' => (! $isConcealed) ? $getMinLength() : null,
-                        'placeholder' => $getPlaceholder(),
+                        'placeholder' => filled($placeholder) ? e($placeholder) : null,
                         'readonly' => $isReadOnly(),
                         'required' => $isRequired() && (! $isConcealed),
                         'step' => $getStep(),
@@ -97,7 +108,7 @@
     @if ($datalistOptions)
         <datalist id="{{ $id }}-list">
             @foreach ($datalistOptions as $option)
-                <option value="{{ $option }}" />
+                <option value="{{ $option }}"></option>
             @endforeach
         </datalist>
     @endif

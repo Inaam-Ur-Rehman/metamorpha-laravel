@@ -8,30 +8,33 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
 use Illuminate\View\ComponentAttributeBag;
-use NumberFormatter;
+use Illuminate\View\ComponentSlot;
 
 if (! function_exists('Filament\Support\format_money')) {
+    /**
+     * @deprecated Use `Illuminate\Support\Number::currency()` instead.
+     */
     function format_money(float | int $money, string $currency, int $divideBy = 0): string
     {
-        $formatter = new NumberFormatter(app()->getLocale(), NumberFormatter::CURRENCY);
-
         if ($divideBy) {
             $money /= $divideBy;
         }
 
-        return $formatter->formatCurrency($money, $currency);
+        return Number::currency($money, $currency);
     }
 }
 
 if (! function_exists('Filament\Support\format_number')) {
+    /**
+     * @deprecated Use `Illuminate\Support\Number::format()` instead.
+     */
     function format_number(float | int $number): string
     {
-        $formatter = new NumberFormatter(app()->getLocale(), NumberFormatter::DECIMAL);
-
-        return $formatter->format($number);
+        return Number::format($number);
     }
 }
 
@@ -47,7 +50,7 @@ if (! function_exists('Filament\Support\get_model_label')) {
 if (! function_exists('Filament\Support\locale_has_pluralization')) {
     function locale_has_pluralization(): bool
     {
-        return (new MessageSelector())->getPluralIndex(app()->getLocale(), 10) > 0;
+        return (new MessageSelector)->getPluralIndex(app()->getLocale(), 10) > 0;
     }
 }
 
@@ -118,18 +121,11 @@ if (! function_exists('Filament\Support\is_slot_empty')) {
             return true;
         }
 
-        return trim(
-            str_replace(
-                [
-                    '<!-- __BLOCK__ -->',
-                    '<!-- __ENDBLOCK__ -->',
-                    '<!--[if BLOCK]><![endif]-->',
-                    '<!--[if ENDBLOCK]><![endif]-->',
-                ],
-                '',
-                $slot->toHtml()
-            ),
-        ) === '';
+        if (! $slot instanceof ComponentSlot) {
+            $slot = new ComponentSlot($slot->toHtml());
+        }
+
+        return ! $slot->hasActualContent();
     }
 }
 
@@ -141,7 +137,7 @@ if (! function_exists('Filament\Support\is_app_url')) {
 }
 
 if (! function_exists('Filament\Support\generate_href_html')) {
-    function generate_href_html(?string $url, bool $shouldOpenInNewTab = false): Htmlable
+    function generate_href_html(?string $url, bool $shouldOpenInNewTab = false, ?bool $shouldOpenInSpaMode = null): Htmlable
     {
         if (blank($url)) {
             return new HtmlString('');
@@ -151,7 +147,7 @@ if (! function_exists('Filament\Support\generate_href_html')) {
 
         if ($shouldOpenInNewTab) {
             $html .= ' target="_blank"';
-        } elseif (FilamentView::hasSpaMode() && is_app_url($url)) {
+        } elseif ($shouldOpenInSpaMode ?? (FilamentView::hasSpaMode($url))) {
             $html .= ' wire:navigate';
         }
 
@@ -168,7 +164,41 @@ if (! function_exists('Filament\Support\generate_search_column_expression')) {
         $driverName = $databaseConnection->getDriverName();
 
         $column = match ($driverName) {
-            'pgsql' => "{$column}::text",
+            'pgsql' => (
+                str($column)->contains('->')
+                            ? (
+                                // Handle `table.field` part with double quotes
+                                str($column)
+                                    ->before('->')
+                                    ->explode('.')
+                                    ->map(fn (string $part): string => (string) str($part)->wrap('"'))
+                                    ->implode('.')
+                            ) . collect(str($column)->after('->')->explode('->')) // Handle JSON path parts
+                                ->map(function ($segment, $index) use ($column): string {
+                                    // If segment already starts with `>` (from `->>` operator), preserve it
+                                    $isExplicitOperatorPrefixed = str($segment)->startsWith('>');
+                                    $segment = $isExplicitOperatorPrefixed ? (string) str($segment)->after('>') : $segment;
+
+                                    // Remove single quotes from segment if present to avoid redundant quoting
+                                    $isWrappedWithSingleQuotes = str($segment)->startsWith("'") && str($segment)->endsWith("'");
+                                    $segment = $isWrappedWithSingleQuotes ? (string) str($segment)->trim("'") : $segment;
+
+                                    if ($isExplicitOperatorPrefixed) {
+                                        return "->>'{$segment}'";
+                                    }
+
+                                    $totalParts = substr_count($column, '->');
+
+                                    return ($index === ($totalParts - 1))
+                                        ? "->>'{$segment}'"
+                                        : "->'{$segment}'";
+                                })
+                                ->implode('')
+                            : str($column)
+                                ->explode('.')
+                                ->map(fn (string $part): string => (string) str($part)->wrap('"'))
+                                ->implode('.')
+            ) . '::text',
             default => $column,
         };
 
@@ -178,6 +208,11 @@ if (! function_exists('Filament\Support\generate_search_column_expression')) {
         };
 
         if ($isSearchForcedCaseInsensitive) {
+            if (in_array($driverName, ['mysql', 'mariadb'], true) && str($column)->contains('->') && ! str($column)->startsWith('json_extract(')) {
+                [$field, $path] = invade($databaseConnection->getQueryGrammar())->wrapJsonFieldAndPath($column); /** @phpstan-ignore-line */
+                $column = "json_extract({$field}{$path})";
+            }
+
             $column = "lower({$column})";
         }
 

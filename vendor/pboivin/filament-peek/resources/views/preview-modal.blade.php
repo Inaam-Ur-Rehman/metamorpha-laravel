@@ -19,6 +19,7 @@
             'is-filament-peek-editor-resizing': editorIsResizing,
         }"
         x-bind:style="modalStyle"
+        x-on:open-preview-tab.window="onOpenPreviewTab($event)"
         x-on:open-preview-modal.window="onOpenPreviewModal($event)"
         x-on:refresh-preview-modal.window="onRefreshPreviewModal($event)"
         x-on:close-preview-modal.window="onClosePreviewModal($event)"
@@ -51,7 +52,7 @@
                             >
                                 <x-filament::icon
                                     :icon="$presetConfig['icon'] ?? 'heroicon-o-computer-desktop'"
-                                    :class="Arr::toCssClasses(['rotate-90' => $presetConfig['rotateIcon'] ?? false])"
+                                    :class="\Illuminate\Support\Arr::toCssClasses(['rotate-90' => $presetConfig['rotateIcon'] ?? false])"
                                 />
                             </button>
                         @endforeach
@@ -74,7 +75,7 @@
 
             <div
                 x-ref="previewModalBody"
-                class="{{ Arr::toCssClasses([
+                class="{{ \Illuminate\Support\Arr::toCssClasses([
                     'filament-peek-panel-body' => true,
                     'allow-iframe-overflow' => config('filament-peek.allowIframeOverflow', false),
                 ]) }}"

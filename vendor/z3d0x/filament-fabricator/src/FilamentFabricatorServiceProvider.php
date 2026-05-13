@@ -2,7 +2,9 @@
 
 namespace Z3d0X\FilamentFabricator;
 
+use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -12,7 +14,10 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Symfony\Component\Finder\SplFileInfo;
 use Z3d0X\FilamentFabricator\Facades\FilamentFabricator;
 use Z3d0X\FilamentFabricator\Layouts\Layout;
+use Z3d0X\FilamentFabricator\Listeners\OptimizeWithLaravel;
+use Z3d0X\FilamentFabricator\Observers\PageRoutesObserver;
 use Z3d0X\FilamentFabricator\PageBlocks\PageBlock;
+use Z3d0X\FilamentFabricator\Services\PageRoutesService;
 
 class FilamentFabricatorServiceProvider extends PackageServiceProvider
 {
@@ -20,7 +25,10 @@ class FilamentFabricatorServiceProvider extends PackageServiceProvider
     {
         $package->name(FilamentFabricatorManager::ID)
             ->hasConfigFile()
-            ->hasMigration('create_pages_table')
+            ->hasMigrations(
+                'create_pages_table',
+                'fix_slug_unique_constraint_on_pages_table',
+            )
             ->hasRoute('web')
             ->hasViews()
             ->hasTranslations()
@@ -40,6 +48,7 @@ class FilamentFabricatorServiceProvider extends PackageServiceProvider
         $commands = [
             Commands\MakeLayoutCommand::class,
             Commands\MakePageBlockCommand::class,
+            Commands\ClearRoutesCacheCommand::class,
         ];
 
         $aliases = [];
@@ -61,42 +70,56 @@ class FilamentFabricatorServiceProvider extends PackageServiceProvider
     {
         parent::packageRegistered();
 
-        $this->app->scoped('filament-fabricator', function () {
-            return new FilamentFabricatorManager();
+        $this->app->singleton('filament-fabricator', function () {
+            return resolve(FilamentFabricatorManager::class);
         });
     }
 
     public function bootingPackage(): void
     {
-        Route::bind('filamentFabricatorPage', function ($value) {
-            $pageModel = FilamentFabricator::getPageModel();
+        if (! $this->app->runningInConsole() || $this->app->runningUnitTests()) {
+            Route::bind('filamentFabricatorPage', function ($value) {
+                /**
+                 * @var PageRoutesService $routesService
+                 */
+                $routesService = resolve(PageRoutesService::class);
 
-            $pageUrls = FilamentFabricator::getPageUrls();
+                return $routesService->findPageOrFail($value);
+            });
 
-            $value = Str::start($value, '/');
+            $this->registerComponentsFromDirectory(
+                Layout::class,
+                config('filament-fabricator.layouts.register'),
+                config('filament-fabricator.layouts.path'),
+                config('filament-fabricator.layouts.namespace')
+            );
 
-            $pageId = array_search($value, $pageUrls);
-
-            return $pageModel::query()
-                ->where('id', $pageId)
-                ->firstOrFail();
-        });
-
-        $this->registerComponentsFromDirectory(
-            Layout::class,
-            config('filament-fabricator.layouts.register'),
-            config('filament-fabricator.layouts.path'),
-            config('filament-fabricator.layouts.namespace')
-        );
-
-        $this->registerComponentsFromDirectory(
-            PageBlock::class,
-            config('filament-fabricator.page-blocks.register'),
-            config('filament-fabricator.page-blocks.path'),
-            config('filament-fabricator.page-blocks.namespace')
-        );
+            $this->registerComponentsFromDirectory(
+                PageBlock::class,
+                config('filament-fabricator.page-blocks.register'),
+                config('filament-fabricator.page-blocks.path'),
+                config('filament-fabricator.page-blocks.namespace')
+            );
+        }
     }
 
+    public function packageBooted()
+    {
+        parent::packageBooted();
+
+        FilamentFabricator::getPageModel()::observe(PageRoutesObserver::class);
+
+        if ((bool) config('filament-fabricator.hook-to-commands')) {
+            Event::listen(CommandFinished::class, OptimizeWithLaravel::class);
+        }
+    }
+
+    /**
+     * @template T of (class-string<Layout>|class-string<PageBlock>)
+     *
+     * @param  T  $baseClass
+     * @param  T[]  $register  - The components to register taken from the user's config file
+     */
     protected function registerComponentsFromDirectory(string $baseClass, array $register, ?string $directory, ?string $namespace): void
     {
         if (blank($directory) || blank($namespace)) {
@@ -111,26 +134,29 @@ class FilamentFabricatorServiceProvider extends PackageServiceProvider
 
         $namespace = Str::of($namespace);
 
-        $register = array_merge(
-            $register,
-            collect($filesystem->allFiles($directory))
-                ->map(function (SplFileInfo $file) use ($namespace): string {
-                    $variableNamespace = $namespace->contains('*') ? str_ireplace(
-                        ['\\' . $namespace->before('*'), $namespace->after('*')],
-                        ['', ''],
-                        Str::of($file->getPath())
-                            ->after(base_path())
-                            ->replace(['/'], ['\\']),
-                    ) : null;
+        collect($filesystem->allFiles($directory))
+            ->lazy()
+            ->map(function (SplFileInfo $file) use ($namespace): string {
+                /**
+                 * @var ?string $variableNamespace
+                 */
+                $variableNamespace = $namespace->contains('*') ? str_ireplace(
+                    ['\\' . $namespace->before('*'), $namespace->after('*')],
+                    ['', ''],
+                    Str::of($file->getPath())
+                        ->after(base_path())
+                        ->replace(['/'], ['\\']),
+                ) : null;
 
-                    return (string) $namespace
-                        ->append('\\', $file->getRelativePathname())
-                        ->replace('*', $variableNamespace)
-                        ->replace(['/', '.php'], ['\\', '']);
-                })
-                ->filter(fn (string $class): bool => is_subclass_of($class, $baseClass) && (! (new ReflectionClass($class))->isAbstract()))
-                ->each(fn (string $class) => FilamentFabricator::registerComponent($class, $baseClass))
-                ->all(),
-        );
+                return $namespace
+                    ->append('\\', $file->getRelativePathname())
+                    ->when($variableNamespace, fn ($namespace) => $namespace->replace('*', $variableNamespace))
+                    ->replace(['/', '.php'], ['\\', ''])
+                    ->toString();
+            })
+            ->concat($register)
+            ->filter(fn (string $class): bool => is_subclass_of($class, $baseClass) && (! (new ReflectionClass($class))->isAbstract()))
+            ->each(fn (string $class) => FilamentFabricator::registerComponent($class, $baseClass))
+            ->all();
     }
 }

@@ -4,7 +4,7 @@ return [
 
     'title' => 'Reset your password',
 
-    'heading' => 'Forgotten your password?',
+    'heading' => 'Forgot password?',
 
     'actions' => [
 
@@ -31,6 +31,10 @@ return [
     ],
 
     'notifications' => [
+
+        'sent' => [
+            'body' => 'If your account doesn\'t exist, you will not receive the email.',
+        ],
 
         'throttled' => [
             'title' => 'Too many requests',

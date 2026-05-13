@@ -9,11 +9,13 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Connection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use League\Csv\Bom;
 use League\Csv\Writer;
 use SplTempFileObject;
 
@@ -50,7 +52,8 @@ class PrepareCsvExport implements ShouldQueue
 
     public function handle(): void
     {
-        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        $csv = Writer::createFromFileObject(new SplTempFileObject);
+        $csv->setOutputBOM(Bom::Utf8);
         $csv->setDelimiter($this->exporter::getCsvDelimiter());
         $csv->insertOne(array_values($this->columnMap));
 
@@ -59,11 +62,76 @@ class PrepareCsvExport implements ShouldQueue
 
         $query = EloquentSerializeFacade::unserialize($this->query);
         $keyName = $query->getModel()->getKeyName();
+        $qualifiedKeyName = $query->getModel()->getQualifiedKeyName();
+
+        /** @var Connection $databaseConnection */
+        $databaseConnection = $query->getConnection();
+        $databaseGrammar = $query->getGrammar();
+
+        if ($databaseConnection->getDriverName() === 'pgsql') {
+            $originalOrders = collect($query->getQuery()->orders)
+                ->reject(function (array $order) use ($qualifiedKeyName): bool {
+                    if (($order['type'] ?? null) === 'Raw') {
+                        return false;
+                    }
+
+                    return ($order['column'] ?? null) === $qualifiedKeyName;
+                })
+                ->unique(function (array $order) use ($databaseGrammar): string {
+                    if (($order['type'] ?? null) === 'Raw') {
+                        return 'raw:' . ($order['sql'] ?? '');
+                    }
+
+                    if ($databaseGrammar->isExpression($order['column'] ?? null)) {
+                        return 'expression:' . $order['column']->getValue($databaseGrammar);
+                    }
+
+                    return 'column:' . ($order['column'] ?? '');
+                });
+
+            /** @var array<string, mixed> $originalBindings */
+            $originalBindings = $query->getRawBindings();
+
+            if (! empty($originalOrders->all())) {
+                $firstOrder = $originalOrders->first();
+
+                if (($firstOrder['type'] ?? null) === 'Raw') {
+                    $query->reorder();
+                    $query->orderByRaw($firstOrder['sql']);
+                } else {
+                    $query->reorder($firstOrder['column'], $firstOrder['direction']);
+                }
+
+                $originalOrders->forget(0);
+            } else {
+                $query->reorder($qualifiedKeyName);
+            }
+
+            foreach ($originalOrders as $order) {
+                if (($order['type'] ?? null) === 'Raw') {
+                    $query->orderByRaw($order['sql']);
+                } elseif (filled($order['column'] ?? null) && filled($order['direction'] ?? null)) {
+                    $query->orderBy($order['column'], $order['direction']);
+                }
+            }
+
+            $newBindings = $query->getRawBindings();
+
+            foreach ($originalBindings as $key => $value) {
+                if ($binding = array_diff($value, $newBindings[$key])) {
+                    $query->addBinding($binding, $key);
+                }
+            }
+        }
 
         $exportCsvJob = $this->getExportCsvJob();
 
         $totalRows = 0;
         $page = 1;
+
+        // We do not want to send the loaded user relationship to the queue in job payloads,
+        // in case it contains attributes that are not serializable, such as binary columns.
+        $this->export->unsetRelation('user');
 
         $dispatchRecords = function (array $records) use ($exportCsvJob, &$page, &$totalRows) {
             $recordsCount = count($records);
@@ -80,14 +148,14 @@ class PrepareCsvExport implements ShouldQueue
             $jobs = [];
 
             foreach (array_chunk($records, length: $this->chunkSize) as $recordsChunk) {
-                $jobs[] = new $exportCsvJob(
-                    $this->export,
-                    $this->query,
-                    $recordsChunk,
-                    $page,
-                    $this->columnMap,
-                    $this->options,
-                );
+                $jobs[] = app($exportCsvJob, [
+                    'export' => $this->export,
+                    'query' => $this->query,
+                    'records' => $recordsChunk,
+                    'page' => $page,
+                    'columnMap' => $this->columnMap,
+                    'options' => $this->options,
+                ]);
 
                 $page++;
             }
@@ -103,18 +171,45 @@ class PrepareCsvExport implements ShouldQueue
             return;
         }
 
-        $baseQuery = $query->toBase();
-        $sortDirection = $baseQuery->orders[0]['direction'] ?? 'asc';
+        $chunkKeySize = $this->chunkSize * 10;
 
-        $baseQuery
-            ->select([$query->getModel()->getQualifiedKeyName()])
-            ->orderedChunkById(
-                $this->chunkSize * 10,
+        $baseQuery = $query->toBase();
+
+        if (in_array($query->getQuery()->orders[0]['column'] ?? null, [$keyName, $qualifiedKeyName])) {
+            $baseQuery->distinct($qualifiedKeyName);
+        }
+
+        /** @phpstan-ignore-next-line */
+        $baseQueryOrders = $baseQuery->orders ?? [];
+        $baseQueryOrdersCount = count($baseQueryOrders);
+
+        if (
+            (
+                ($baseQueryOrdersCount === 1) &&
+                (! in_array($baseQueryOrders[0]['column'] ?? null, [$keyName, $qualifiedKeyName]))
+            ) ||
+            ($baseQueryOrdersCount > 1)
+        ) {
+            $baseQuery->chunk(
+                $this->chunkSize,
                 fn (Collection $records) => $dispatchRecords(
                     Arr::pluck($records->all(), $keyName),
                 ),
-                $keyName,
-                descending: $sortDirection === 'desc',
+            );
+
+            return;
+        }
+
+        $baseQuery
+            ->select([$qualifiedKeyName])
+            ->orderedChunkById(
+                $chunkKeySize,
+                fn (Collection $records) => $dispatchRecords(
+                    Arr::pluck($records->all(), $keyName),
+                ),
+                column: $qualifiedKeyName,
+                alias: $keyName,
+                descending: ($baseQueryOrders[0]['direction'] ?? 'asc') === 'desc',
             );
     }
 

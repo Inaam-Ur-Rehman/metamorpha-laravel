@@ -2,13 +2,14 @@
 
 namespace Livewire\Mechanisms\HandleComponents;
 
+use function Livewire\{store, trigger, wrap };
+use ReflectionUnionType;
 use Livewire\Mechanisms\Mechanism;
-use function Livewire\{ invade, store, trigger, wrap };
 use Livewire\Mechanisms\HandleComponents\Synthesizers\Synth;
+use Livewire\Exceptions\PublicPropertyNotFoundException;
 use Livewire\Exceptions\MethodNotFoundException;
 use Livewire\Drawer\Utils;
 use Illuminate\Support\Facades\View;
-use ReflectionUnionType;
 
 class HandleComponents extends Mechanism
 {
@@ -20,6 +21,7 @@ class HandleComponents extends Mechanism
         Synthesizers\StdClassSynth::class,
         Synthesizers\ArraySynth::class,
         Synthesizers\IntSynth::class,
+        Synthesizers\FloatSynth::class
     ];
 
     public static $renderStack = [];
@@ -83,6 +85,29 @@ class HandleComponents extends Mechanism
 
     public function update($snapshot, $updates, $calls)
     {
+        if (! is_array($snapshot)
+            || ! is_array($snapshot['data'] ?? null)
+            || ! is_array($snapshot['memo'] ?? null)
+            || ! is_string($snapshot['checksum'] ?? null)
+            || ! is_string($snapshot['memo']['id'] ?? null)
+            || ! is_scalar($snapshot['memo']['name'] ?? null)
+        ) {
+            if (config('app.debug')) throw new \InvalidArgumentException('Invalid Livewire snapshot structure: expected [data], [memo], [checksum], [memo.id], and [memo.name].');
+
+            abort(404);
+        }
+
+        foreach ($calls as $call) {
+            if (! is_array($call)
+                || ! is_string($call['method'] ?? null)
+                || ! is_array($call['params'] ?? null)
+            ) {
+                if (config('app.debug')) throw new \InvalidArgumentException('Invalid Livewire call structure: each call must contain [method] (string) and [params] (array).');
+
+                abort(404);
+            }
+        }
+
         $data = $snapshot['data'];
         $memo = $snapshot['memo'];
 
@@ -214,6 +239,24 @@ class HandleComponents extends Mechanism
         });
     }
 
+    protected function hydratePropertyUpdate($valueOrTuple, $context, $path)
+    {
+        if (! Utils::isSyntheticTuple($value = $tuple = $valueOrTuple)) return $value;
+
+        [$value, $meta] = $tuple;
+
+        // Nested properties get set as `__rm__` when they are removed. We don't want to hydrate these.
+        if ($this->isRemoval($value) && str($path)->contains('.')) {
+            return $value;
+        }
+
+        $synth = $this->propertySynth($meta['s'], $context, $path);
+
+        return $synth->hydrate($value, $meta, function ($name, $child) {
+            return $child;
+        });
+    }
+
     protected function render($component, $default = null)
     {
         if ($html = store($component)->get('skipRender', false)) {
@@ -311,10 +354,15 @@ class HandleComponents extends Mechanism
 
         $finish = trigger('update', $component, $path, $value);
 
+        // Ensure that it's a public property, not on the base class first...
+        if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)))) {
+            throw new PublicPropertyNotFoundException($property, $component->getName());
+        }
+
         // If this isn't a "deep" set, set it directly, otherwise we have to
         // recursively get up and set down the value through the synths...
         if (empty($segments)) {
-            if (! $this->isRemoval($value)) $this->setComponentPropertyAwareOfTypes($component, $property, $value);
+            $this->setComponentPropertyAwareOfTypes($component, $property, $value);
         } else {
             $propertyValue = $component->$property;
 
@@ -332,7 +380,7 @@ class HandleComponents extends Mechanism
 
         // If we have meta data already for this property, let's use that to get a synth...
         if ($meta) {
-            return $this->hydrate([$value, $meta], $context, $path);
+            return $this->hydratePropertyUpdate([$value, $meta], $context, $path);
         }
 
         // If we don't, let's check to see if it's a typed property and fetch the synth that way...
@@ -473,7 +521,17 @@ class HandleComponents extends Mechanism
         $context->addEffect('returns', $returns);
     }
 
-    protected function propertySynth($keyOrTarget, $context, $path): Synth
+    public function findSynth($keyOrTarget, $component): ?Synth
+    {
+        $context = new ComponentContext($component);
+        try {
+            return $this->propertySynth($keyOrTarget, $context, null);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function propertySynth($keyOrTarget, $context, $path): Synth
     {
         return is_string($keyOrTarget)
             ? $this->getSynthesizerByKey($keyOrTarget, $context, $path)

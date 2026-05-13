@@ -12,7 +12,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns;
-use Filament\Pages\SimplePage;
+use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Exceptions\Halt;
@@ -21,27 +21,42 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Js;
 use Illuminate\Validation\Rules\Password;
-
-use function Filament\Support\is_app_url;
+use Throwable;
 
 /**
  * @property Form $form
  */
-class EditProfile extends SimplePage
+class EditProfile extends Page
 {
-    use Concerns\HasRoutes;
+    use Concerns\CanUseDatabaseTransactions;
+    use Concerns\HasMaxWidth;
+    use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
-
-    /**
-     * @var view-string
-     */
-    protected static string $view = 'filament-panels::pages.auth.edit-profile';
 
     /**
      * @var array<string, mixed> | null
      */
     public ?array $data = [];
+
+    protected static bool $isDiscovered = false;
+
+    public function getLayout(): string
+    {
+        return static::$layout ?? (static::isSimple() ? 'filament-panels::components.layout.simple' : 'filament-panels::components.layout.index');
+    }
+
+    public static function isSimple(): bool
+    {
+        return Filament::isProfilePageSimple();
+    }
+
+    public function getView(): string
+    {
+        return static::$view ?? 'filament-panels::pages.auth.edit-profile';
+    }
 
     public static function getLabel(): string
     {
@@ -87,6 +102,26 @@ class EditProfile extends SimplePage
         $this->callHook('afterFill');
     }
 
+    public static function registerRoutes(Panel $panel): void
+    {
+        if (filled(static::getCluster())) {
+            Route::name(static::prependClusterRouteBaseName(''))
+                ->prefix(static::prependClusterSlug(''))
+                ->group(fn () => static::routes($panel));
+
+            return;
+        }
+
+        static::routes($panel);
+    }
+
+    public static function getRouteName(?string $panel = null): string
+    {
+        $panel = $panel ? Filament::getPanel($panel) : Filament::getCurrentPanel();
+
+        return $panel->generateRouteName('auth.' . static::getRelativeRouteName());
+    }
+
     /**
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
@@ -108,6 +143,8 @@ class EditProfile extends SimplePage
     public function save(): void
     {
         try {
+            $this->beginDatabaseTransaction();
+
             $this->callHook('beforeValidate');
 
             $data = $this->form->getState();
@@ -122,8 +159,18 @@ class EditProfile extends SimplePage
 
             $this->callHook('afterSave');
         } catch (Halt $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $this->rollBackDatabaseTransaction() :
+                $this->commitDatabaseTransaction();
+
             return;
+        } catch (Throwable $exception) {
+            $this->rollBackDatabaseTransaction();
+
+            throw $exception;
         }
+
+        $this->commitDatabaseTransaction();
 
         if (request()->hasSession() && array_key_exists('password', $data)) {
             request()->session()->put([
@@ -137,7 +184,7 @@ class EditProfile extends SimplePage
         $this->getSavedNotification()?->send();
 
         if ($redirectUrl = $this->getRedirectUrl()) {
-            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode() && is_app_url($redirectUrl));
+            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
         }
     }
 
@@ -161,7 +208,7 @@ class EditProfile extends SimplePage
 
         return Notification::make()
             ->success()
-            ->title($this->getSavedNotificationTitle());
+            ->title($title);
     }
 
     protected function getSavedNotificationTitle(): ?string
@@ -239,7 +286,8 @@ class EditProfile extends SimplePage
                     ])
                     ->operation('edit')
                     ->model($this->getUser())
-                    ->statePath('data'),
+                    ->statePath('data')
+                    ->inlineLabel(! static::isSimple()),
             ),
         ];
     }
@@ -300,7 +348,15 @@ class EditProfile extends SimplePage
     {
         return Action::make('back')
             ->label(__('filament-panels::pages/auth/edit-profile.actions.cancel.label'))
-            ->url(filament()->getUrl())
+            ->alpineClickHandler('document.referrer ? window.history.back() : (window.location.href = ' . Js::from(filament()->getUrl()) . ')')
             ->color('gray');
+    }
+
+    protected function getLayoutData(): array
+    {
+        return [
+            'hasTopbar' => $this->hasTopbar(),
+            'maxWidth' => $this->getMaxWidth(),
+        ];
     }
 }

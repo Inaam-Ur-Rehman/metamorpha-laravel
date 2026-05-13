@@ -2,6 +2,200 @@
 
 All notable changes to `filament-fabricator` will be documented in this file.
 
+## v2.6.1 - 2025-09-09
+
+### What's Changed
+
+* hotfix: Revert changes made in v2.6.0 by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/236
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.6.0...v2.6.1
+
+## v2.5.1 - 2025-08-03
+
+### What's Changed
+
+* build(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/Z3d0X/filament-fabricator/pull/225
+* build(deps): bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/Z3d0X/filament-fabricator/pull/231
+* Fix: bind page route when runnning unit tests by @thecrazybob in https://github.com/Z3d0X/filament-fabricator/pull/224
+* Fix: resolve PHP 8 deprecation warning in namespace handling by @thecrazybob in https://github.com/Z3d0X/filament-fabricator/pull/219
+* Add dutch translations by @lbovit in https://github.com/Z3d0X/filament-fabricator/pull/220
+* build(deps): bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/Z3d0X/filament-fabricator/pull/229
+* Fix issue when removing old urls from uncached pages by @Voltra in https://github.com/Z3d0X/filament-fabricator/commit/2e09ce5d6b5a9cb04c9d1c9a17f519e76febb7e4
+
+### New Contributors
+
+* @thecrazybob made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/224
+* @lbovit made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/220
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.5...v2.5.1
+
+## v2.5 - 2025-03-04
+
+### What's Changed
+
+* build(deps): bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/210
+* build(deps): bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/211
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/Z3d0X/filament-fabricator/pull/216
+* Null Page Reference in FilamentFabricator Block Preloading by @rsandipermana in https://github.com/Z3d0X/filament-fabricator/pull/214
+
+### New Contributors
+
+* @rsandipermana made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/214
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.4.3...v2.5
+
+## v2.4.3 - 2025-01-22
+
+### What's Changed
+
+* Add Indonesian language translations for page resource by @cuinc99 in https://github.com/Z3d0X/filament-fabricator/pull/208
+
+### New Contributors
+
+* @cuinc99 made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/208
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.4.2...v2.4.3
+
+## v2.4.2 - 2025-01-08
+
+### What's Changed
+
+* Rename ResourcheSchemaSlot.php to ResourceSchemaSlot.php by @rezadindar in https://github.com/Z3d0X/filament-fabricator/pull/206
+* proposal: Replace the default middleware list by the 'web' middleware group by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/207
+
+### New Contributors
+
+* @rezadindar made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/206
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.4.1...v2.4.2
+
+## v2.4.1 - 2025-01-07
+
+### What's Changed
+
+* Add constants for layout render hooks by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/193
+* Fix n+1 query by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/199
+* Fix modal picker style by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/200
+* Fix PHPStan by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/201
+* hotfix: Proper clearing of the ID<->URI mappings by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/204
+* Add constants for page resource schema slots by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/203
+* feat ( Localization ) : add Turkish lang. by @AzizEmir in https://github.com/Z3d0X/filament-fabricator/pull/202
+
+### New Contributors
+
+* @AzizEmir made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/202
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.4.0...v2.4.1
+
+## v2.4.0 - 2024-12-24
+
+### What's Changed
+
+* "Smart" route URLs caching by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/119
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.3.0...v2.4.0
+
+## v2.3.0 - 2024-12-22
+
+### What's Changed
+
+* allow layout live switching by @phpsa in https://github.com/Z3d0X/filament-fabricator/pull/188
+* Add exception for runningInConsole in FilamentFabricatorServiceProvid… by @yolanmees in https://github.com/Z3d0X/filament-fabricator/pull/160
+* Add a hook to allow mass-preload/batch-load of related data when rendering a page's blocks by @Voltra in https://github.com/Z3d0X/filament-fabricator/pull/166
+
+### New Contributors
+
+* @phpsa made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/188
+* @yolanmees made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/160
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.2.2...v2.3.0
+
+## v2.2.2 - 2024-05-12
+
+### What's Changed
+
+* build(deps): bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/152
+* build(deps): bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/156
+* Allow string IDs by @rojtjo in https://github.com/Z3d0X/filament-fabricator/pull/158
+
+### New Contributors
+
+* @rojtjo made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/158
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.2.1...v2.2.2
+
+## v2.2.1 - 2024-04-15
+
+### What's Changed
+
+* build(deps): bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/148
+* Add note to README regarding the plugin assets by @pboivin in https://github.com/Z3d0X/filament-fabricator/pull/149
+* Fixed incorrect table name during migration by @witaway in https://github.com/Z3d0X/filament-fabricator/pull/151
+
+### New Contributors
+
+* @pboivin made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/149
+* @witaway made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/151
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.2.0...v2.2.1
+
+## v2.2.0 - 2024-03-12
+
+### Laravel 11.x compatibility added
+
+#### What's Changed
+
+* build(deps): bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/143
+* Laravel 11.x Compatibility by @laravel-shift in https://github.com/Z3d0X/filament-fabricator/pull/142
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.1.1...v2.2.0
+
+## v2.1.1 - 2024-02-19
+
+### What's Changed
+
+* Fix Resource Registration by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/140
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.1.0...v2.1.1
+
+## v2.1.0 - 2024-02-09
+
+### What's Changed
+
+* Fix Slug Unique Constraint by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/135
+* Feature Block Picker Styles by @Z3d0X in https://github.com/Z3d0X/filament-fabricator/pull/136
+
+Note: to apply the fix for unique slug issue from #135 please publish the migrations using `php artisan vendor:publish --tag=filament-fabricator-migrations` & then run migrations
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.0.6...v2.1.0
+
+## v2.0.6 - 2024-02-03
+
+### What's Changed
+
+* Fix octane issues change registering package from scoped to singleton by @ksimenic in https://github.com/Z3d0X/filament-fabricator/pull/130
+
+### New Contributors
+
+* @ksimenic made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/130
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.0.5...v2.0.6
+
+## v2.0.5 - 2024-01-18
+
+### What's Changed
+
+* Respect app locale for slug generation by @flolanger in https://github.com/Z3d0X/filament-fabricator/pull/109
+* build(deps): bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/Z3d0X/filament-fabricator/pull/124
+* [ar]: Add Arabic translations by @mohamedsabil83 in https://github.com/Z3d0X/filament-fabricator/pull/127
+
+### New Contributors
+
+* @flolanger made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/109
+* @mohamedsabil83 made their first contribution in https://github.com/Z3d0X/filament-fabricator/pull/127
+
+**Full Changelog**: https://github.com/Z3d0X/filament-fabricator/compare/v2.0.4...v2.0.5
+
 ## v2.0.4 - 2023-11-26
 
 ### What's Changed
