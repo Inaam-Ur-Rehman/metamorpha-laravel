@@ -40,7 +40,7 @@
     {{-- Bottom Quote/Text: 3xl on desktop (original design), responsive on mobile --}}
     @if($text)
         <div class="absolute bottom-[10%] md:bottom-[12%] z-40 w-full px-6 text-center">
-            <p class="text-white font-vpc700 uppercase tracking-wider" style="font-size: clamp(1.2rem, 3.5vw, 1.875rem);">
+            <p class="text-white font-vpc700 tracking-wider" style="font-size: clamp(1.2rem, 3.5vw, 1.375rem);">
                 {{ $text }}
             </p>
         </div>
