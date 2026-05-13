@@ -1,8 +1,7 @@
 @aware(['page'])
 @props(['heading', 'subHeading', 'btnLabel', 'btnLink', 'text', 'video', 'poster'])
-<div class="relative w-full min-h-screen">
-    <div
-        class=" text-white z-40 transform -translate-x-[20%] top-[20%] left-[20%] -translate-y-[20%] px-4 max-w-full overflow-hidden">
+<div class=" w-full min-h-screen">
+    <div class=" text-white z-40 transform  px-4 max-w-full">
         <h1 class="heading-hero text-4xl">{{ $heading }}</h1>
         <p class="text-xl text-white">{{ $subHeading }}</p>
         <a type="button" href="{{ $btnLink }}"
