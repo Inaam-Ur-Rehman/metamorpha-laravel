@@ -132,12 +132,16 @@ body {
 
 .heading-hero {
     all: unset;
-    font-size: 4rem;
+    /* This will scale between 2.5rem on small screens to 5rem on large screens */
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
     color: white;
-    /* -webkit-text-fill-color: transparent;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: white; */
+    /* Changed to white for better visibility on video */
     text-transform: uppercase;
+    font-family: "Verdana Pro Cond Black", sans-serif;
+    /* Example font usage */
+    line-height: 1.1;
+    display: block;
+    width: 100%;
 }
 
 .quote {
