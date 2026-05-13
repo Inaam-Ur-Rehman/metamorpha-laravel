@@ -1,8 +1,9 @@
 @aware(['page'])
 @props(['heading', 'subHeading', 'btnLabel', 'btnLink', 'text', 'video', 'poster'])
 <div class="relative w-full min-h-screen">
-    <div class="absolute text-white z-40 transform -translate-x-[20%] top-[20%] left-[20%] -translate-y-[20%] px-4 max-w-full overflow-hidden">
-        <h1 class="heading-hero font-v400">{{ $heading }}</h1>
+    <div
+        class="absolute text-white z-40 transform -translate-x-[20%] top-[20%] left-[20%] -translate-y-[20%] px-4 max-w-full overflow-hidden">
+        <h1 class="heading-hero text-4xl">{{ $heading }}</h1>
         <p class="text-xl text-white">{{ $subHeading }}</p>
         <a type="button" href="{{ $btnLink }}"
             class="rounded-full inline-block px-4 py-2 text-theme-blue bg-white !font-v400 mt-16">{{ $btnLabel }}</a>
